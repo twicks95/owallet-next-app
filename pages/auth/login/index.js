@@ -1,10 +1,10 @@
+import Cookie from "js-cookie";
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import Layout from "../../../components/Layout";
 import styles from "../../../styles/Login.module.css";
-import Cookie from "js-cookie";
 import { unauthorizationPage } from "../../../middleware/authorizationPage";
-import Link from "next/link";
 import { IconContext, EnvelopeSimple, LockSimple } from "phosphor-react";
 
 export async function getServerSideProps(context) {
@@ -49,8 +49,6 @@ export default function Login() {
     }
   };
 
-  console.log(form);
-
   return (
     <Layout title="Login">
       <IconContext.Provider
@@ -94,7 +92,7 @@ export default function Login() {
                   gradientUnits="userSpaceOnUse"
                 >
                   <stop stopColor="white" stopOpacity="0.2" />
-                  <stop offset="1" stop-color="white" stopOpacity="0" />
+                  <stop offset="1" stopColor="white" stopOpacity="0" />
                 </linearGradient>
               </defs>
             </svg>
@@ -190,9 +188,15 @@ export default function Login() {
               >
                 <Link href="/reset-password">Forgot password?</Link>
               </div>
-              <button type="submit" className="btn btn-primary">
-                Submit
-              </button>
+              {!form.userEmail || !form.userPassword ? (
+                <button type="submit" className="btn btn-primary" disabled>
+                  Submit
+                </button>
+              ) : (
+                <button type="submit" className="btn btn-primary">
+                  Submit
+                </button>
+              )}
             </form>
             <p className="text-center">
               Don’t have an account? Let’s{" "}
