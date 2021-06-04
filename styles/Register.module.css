@@ -36,7 +36,6 @@
 }
 
 .formSection {
-  color: #3a3d42;
   width: 45%;
   height: 100vh;
   padding: 4% 8%;
@@ -62,11 +61,8 @@
   align-items: center;
 }
 
-.formContainer inpnut[type="submit"]:disabled {
-  background-color: red !important;
-}
-
 .emailLabel,
+.nameLabel,
 .passwordLabel {
   color: rgba(169, 169, 169, 0.8);
   cursor: text;
@@ -77,7 +73,6 @@
 }
 
 .moveLabel {
-  color: #3a3d42;
   font-weight: 600;
   transform: translate(-30px, -2em) !important;
 }
@@ -95,20 +90,26 @@
   margin-top: 90px;
 }
 
-.signup {
+.login {
   font-weight: 700;
+  color: #6379f4;
 }
 
 .envelope,
-.lock {
+.eye,
+.eyeSlash,
+.lock,
+.user {
   position: absolute;
 }
 
-.forgotPassword {
-  margin-top: 20px;
+.eye,
+.eyeSlash {
+  cursor: pointer;
+  right: 0;
 }
 
-.signup,
-.forgotPassword a:hover {
-  color: #6379f4;
+.formSection,
+.moveLabel {
+  color: #3a3d42;
 }

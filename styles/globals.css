@@ -20,12 +20,22 @@ a {
 .btn {
   border-radius: 12px;
   height: 57px;
+  font-weight: 700;
 }
 
 .btn-primary {
   background-color: #6379f4;
+  border-color: #6379f4;
+}
+
+.btn.btn-primary:disabled {
+  background-color: #dadada;
+  color: #88888f;
+  border-style: none;
 }
 
 .btn-primary:hover {
   background-color: #5668cf;
+  border-color: #5668cf;
+  box-shadow: 0px 10px 20px rgba(86, 104, 207, 0.151);
 }
