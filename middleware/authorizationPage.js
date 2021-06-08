@@ -1,4 +1,3 @@
-import React from "react";
 import cookies from "next-cookies";
 
 // for login page (public)
