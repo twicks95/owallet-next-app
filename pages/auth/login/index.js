@@ -1,11 +1,19 @@
 import Cookie from "js-cookie";
-import { useState } from "react";
 import Link from "next/link";
+import { useState } from "react";
 import { useRouter } from "next/router";
+import {
+  IconContext,
+  EnvelopeSimple,
+  Eye,
+  EyeSlash,
+  LockSimple,
+  WarningCircle,
+} from "phosphor-react";
 import Layout from "../../../components/Layout";
 import styles from "../../../styles/Login.module.css";
 import { unauthorizationPage } from "../../../middleware/authorizationPage";
-import { IconContext, EnvelopeSimple, LockSimple } from "phosphor-react";
+import axiosApiInstances from "../../../utils/axios";
 
 export async function getServerSideProps(context) {
   await unauthorizationPage(context);
@@ -15,38 +23,45 @@ export async function getServerSideProps(context) {
 export default function Login() {
   const router = useRouter();
   const [form, setForm] = useState({ userEmail: "", userPassword: "" });
-  const [emailActive, setEmailActive] = useState(false);
-  const [passwordActive, setPasswordActive] = useState(false);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
-    // proses axios di dalam .then
-    const data = {
-      user_id: 1,
-    };
-    Cookie.set("token", "testingToken", { expires: 1, secure: true });
-    Cookie.set("userId", data.user_id, { expires: 1, secure: true });
-    router.push("/");
+    setLoading(true);
+    window.setTimeout(() => {
+      axiosApiInstances
+        .post("auth/login", form)
+        .then((res) => {
+          const { token, user_id, user_pin } = res.data.data;
+          Cookie.set("token", token, {
+            expires: 1,
+            secure: true,
+          });
+          Cookie.set("userId", user_id, {
+            expires: 1,
+            secure: true,
+          });
+          if (user_pin) {
+            router.push("/");
+          } else {
+            router.push("/create-pin");
+          }
+        })
+        .catch((err) => {
+          setMessage(err.response.data.msg);
+          setError(true);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }, 2000);
   };
 
   const handleText = (e) => {
-    e.target.name === "email"
-      ? setForm({ ...form, userEmail: e.target.value })
-      : setForm({ ...form, userPassword: e.target.value });
-  };
-
-  const onEscape = (e) => {
-    if (e.keyCode === 27 && e.target.name === "email" && !form.userEmail) {
-      document.querySelector(".email-input").blur();
-      setEmailActive(false);
-    } else if (
-      e.keyCode === 27 &&
-      e.target.name === "password" &&
-      !form.userPassword
-    ) {
-      document.querySelector(".password-input").blur();
-      setPasswordActive(false);
-    }
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   return (
@@ -108,7 +123,7 @@ export default function Login() {
                 src="/phone2png.png"
                 style={{
                   width: "50%",
-                  marginLeft: "-100px",
+                  marginLeft: "-20%",
                   transform: "rotate(9.45deg)",
                 }}
               />
@@ -137,10 +152,28 @@ export default function Login() {
               className={`my-5 p-0 ${styles.formContainer}`}
               onSubmit={handleLogin}
             >
+              {error && (
+                <div
+                  className="alert alert-danger d-flex align-items-center mb-5"
+                  role="alert"
+                >
+                  <IconContext.Provider
+                    value={{
+                      color: "#842029",
+                      size: "1.2em",
+                      weight: "bold",
+                      mirrored: false,
+                    }}
+                  >
+                    <WarningCircle className="me-2" />
+                  </IconContext.Provider>
+                  <div>{message}</div>
+                </div>
+              )}
               <div className={`mb-5 ${styles.inputGroup}`}>
                 <label
                   className={`m-0 form-labe ${
-                    emailActive || form.userEmail ? styles.moveLabel : ""
+                    form.userEmail && styles.moveLabel
                   } ${styles.emailLabel}`}
                   for="email"
                 >
@@ -151,35 +184,38 @@ export default function Login() {
                   type="email"
                   id="email"
                   className={`form-control shadow-none email-input ${styles.emailInput}`}
-                  name="email"
+                  name="userEmail"
                   aria-describedby="emailHelp"
                   onChange={(e) => handleText(e)}
-                  onKeyUp={(e) => onEscape(e)}
-                  onClick={() => {
-                    setEmailActive(true);
-                  }}
                 />
               </div>
               <div className={`mb-3 ${styles.inputGroup}`}>
                 <label
                   className={`m-0 form-label ${
-                    passwordActive || form.userPassword ? styles.moveLabel : ""
+                    form.userPassword && styles.moveLabel
                   } ${styles.passwordLabel}`}
                   for="password"
                 >
                   Password
                 </label>
                 <LockSimple className={`${styles.lock}`} />
+                {showPassword ? (
+                  <EyeSlash
+                    className={`${styles.eyeSlash}`}
+                    onClick={() => setShowPassword(false)}
+                  />
+                ) : (
+                  <Eye
+                    className={`${styles.eye}`}
+                    onClick={() => setShowPassword(true)}
+                  />
+                )}
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   className={`form-control shadow-none password-input ${styles.passwordInput}`}
-                  name="password"
+                  name="userPassword"
                   onChange={(e) => handleText(e)}
-                  onKeyUp={(e) => onEscape(e)}
-                  onClick={() => {
-                    setPasswordActive(true);
-                  }}
                 />
               </div>
               <div
@@ -189,12 +225,25 @@ export default function Login() {
                 <Link href="/reset-password">Forgot password?</Link>
               </div>
               {!form.userEmail || !form.userPassword ? (
-                <button type="submit" className="btn btn-primary" disabled>
-                  Submit
+                <button type="button" className="btn btn-primary" disabled>
+                  Login
+                </button>
+              ) : loading ? (
+                <button
+                  className="btn btn-primary d-flex align-items-center justify-content-center"
+                  type="button"
+                  disabled
+                >
+                  <span
+                    className="spinner-grow spinner-grow-sm me-2"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  Loading...
                 </button>
               ) : (
                 <button type="submit" className="btn btn-primary">
-                  Submit
+                  Login
                 </button>
               )}
             </form>

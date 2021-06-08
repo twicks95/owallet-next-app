@@ -1,4 +1,3 @@
-import Cookie from "js-cookie";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -12,7 +11,9 @@ import {
   IconContext,
   LockSimple,
   User,
+  WarningCircle,
 } from "phosphor-react";
+import axiosApiInstances from "../../../utils/axios";
 
 export async function getServerSideProps(context) {
   await unauthorizationPage(context);
@@ -21,50 +22,37 @@ export async function getServerSideProps(context) {
 
 export default function Register() {
   const router = useRouter();
+  const [error, setError] = useState(false);
   const [form, setForm] = useState({
     userName: "",
     userEmail: "",
     userPassword: "",
   });
-  const [emailActive, setEmailActive] = useState(false);
-  const [nameActive, setNameActive] = useState(false);
-  const [passwordActive, setPasswordActive] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const handleRegister = (e) => {
     e.preventDefault();
-    // proses axios di dalam .then
-    const data = {
-      user_id: 1,
-    };
-    Cookie.set("token", "testingToken", { expires: 1, secure: true });
-    Cookie.set("userId", data.user_id, { expires: 1, secure: true });
-    router.push("/");
+    setLoading(true);
+    window.setTimeout(() => {
+      axiosApiInstances
+        .post(`auth/register`, form)
+        .then((res) => {
+          router.push("/login");
+        })
+        .catch((err) => {
+          setMessage(err.response.data.msg);
+          setError(true);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }, 2000);
   };
 
   const handleText = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const onEscape = (e) => {
-    if (e.keyCode === 27 && e.target.name === "userName" && !form.userName) {
-      document.querySelector(".name-input").blur();
-      setNameActive(false);
-    } else if (
-      e.keyCode === 27 &&
-      e.target.name === "userEmail" &&
-      !form.userEmail
-    ) {
-      document.querySelector(".email-input").blur();
-      setEmailActive(false);
-    } else if (
-      e.keyCode === 27 &&
-      e.target.name === "userPassword" &&
-      !form.userPassword
-    ) {
-      document.querySelector(".password-input").blur();
-      setPasswordActive(false);
-    }
   };
 
   return (
@@ -77,7 +65,7 @@ export default function Register() {
           mirrored: false,
         }}
       >
-        <div className={`d-flex ${styles.outerContainer}`}>
+        <div className={`d-sm-flex ${styles.outerContainer}`}>
           <div className={`text-start d-flex flex-column ${styles.leftBanner}`}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -126,7 +114,7 @@ export default function Register() {
                 src="/phone2png.png"
                 style={{
                   width: "50%",
-                  marginLeft: "-100px",
+                  marginLeft: "-20%",
                   transform: "rotate(9.45deg)",
                 }}
               />
@@ -155,10 +143,25 @@ export default function Register() {
               className={`my-5 p-0 ${styles.formContainer}`}
               onSubmit={handleRegister}
             >
+              {error && (
+                <div className="alert alert-warning mb-5" role="alert">
+                  <IconContext.Provider
+                    value={{
+                      color: "#664D03",
+                      size: "1.2em",
+                      weight: "bold",
+                      mirrored: false,
+                    }}
+                  >
+                    <WarningCircle className="mb-2" />
+                  </IconContext.Provider>
+                  <div>{message}</div>
+                </div>
+              )}
               <div className={`mb-5 ${styles.inputGroup}`}>
                 <label
-                  className={`m-0 form-labe ${
-                    nameActive || form.userName ? styles.moveLabel : ""
+                  className={`m-0 form-label ${
+                    form.userName && styles.moveLabel
                   } ${styles.nameLabel}`}
                   for="name"
                 >
@@ -171,16 +174,12 @@ export default function Register() {
                   className={`form-control shadow-none name-input ${styles.nameInput}`}
                   name="userName"
                   onChange={(e) => handleText(e)}
-                  onKeyUp={(e) => onEscape(e)}
-                  onClick={() => {
-                    setNameActive(true);
-                  }}
                 />
               </div>
               <div className={`mb-5 ${styles.inputGroup}`}>
                 <label
                   className={`m-0 form-labe ${
-                    emailActive || form.userEmail ? styles.moveLabel : ""
+                    form.userEmail && styles.moveLabel
                   } ${styles.emailLabel}`}
                   for="email"
                 >
@@ -194,16 +193,15 @@ export default function Register() {
                   name="userEmail"
                   aria-describedby="emailHelp"
                   onChange={(e) => handleText(e)}
-                  onKeyUp={(e) => onEscape(e)}
-                  onClick={() => {
-                    setEmailActive(true);
-                  }}
                 />
               </div>
-              <div className={`mb-3 ${styles.inputGroup}`}>
+              <div
+                style={{ marginBottom: "90px" }}
+                className={`${styles.inputGroup}`}
+              >
                 <label
                   className={`m-0 form-label ${
-                    passwordActive || form.userPassword ? styles.moveLabel : ""
+                    form.userPassword && styles.moveLabel
                   } ${styles.passwordLabel}`}
                   for="password"
                 >
@@ -227,15 +225,24 @@ export default function Register() {
                   className={`form-control shadow-none password-input ${styles.passwordInput}`}
                   name="userPassword"
                   onChange={(e) => handleText(e)}
-                  onKeyUp={(e) => onEscape(e)}
-                  onClick={() => {
-                    setPasswordActive(true);
-                  }}
                 />
               </div>
               {!form.userName || !form.userEmail || !form.userPassword ? (
                 <button type="submit" className="btn btn-primary" disabled>
                   Sign Up
+                </button>
+              ) : loading ? (
+                <button
+                  className="btn btn-primary d-flex align-items-center justify-content-center"
+                  type="button"
+                  disabled
+                >
+                  <span
+                    className="spinner-grow spinner-grow-sm me-2"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  Loading...
                 </button>
               ) : (
                 <button type="submit" className="btn btn-primary">
