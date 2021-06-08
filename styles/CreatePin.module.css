@@ -64,60 +64,30 @@
   padding: 15px;
 }
 
-.formContainer .inputGroup {
-  position: relative;
+.inputs {
   display: flex;
-  align-items: center;
-}
-
-.emailLabel,
-.nameLabel,
-.passwordLabel {
-  color: rgba(169, 169, 169, 0.8);
-  cursor: text;
-  position: absolute;
-  left: 30px;
-  /* transform: translate(1em, 0.6em); */
-  transition: all 0.2s ease-in-out;
-}
-
-.moveLabel {
-  font-weight: 600;
-  transform: translate(-30px, -2em) !important;
+  justify-content: space-between;
+  height: 3em;
 }
 
 .formContainer input {
-  padding: 11px 30px;
-  font-weight: 600;
-  border-radius: 0;
-  border-style: none;
-  border-bottom: 1.5px solid #6379f4;
+  border: 1px solid rgba(169, 169, 169, 0.6);
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 5px 12px rgba(99, 121, 244, 0.1);
+  font-size: 100%;
+  font-weight: 700;
+  text-align: center;
+  height: 100%;
+  outline: none;
+  width: 100%;
+}
+
+.formContainer input:not(:last-child) {
+  margin-right: 10px;
 }
 
 .formContainer button {
   width: 100%;
-}
-
-.login {
-  font-weight: 700;
-  color: #6379f4;
-}
-
-.envelope,
-.eye,
-.eyeSlash,
-.lock,
-.user {
-  position: absolute;
-}
-
-.eye,
-.eyeSlash {
-  cursor: pointer;
-  right: 0;
-}
-
-.formSection,
-.moveLabel {
-  color: #3a3d42;
+  margin-top: 90px;
 }

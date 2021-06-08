@@ -1,0 +1,76 @@
+.outerContainer {
+  background: #eff6ff;
+  height: 100%;
+  padding: 3% 10%;
+}
+.dashboardContainer .head {
+  background-color: #6379f4 !important;
+}
+.dashboardContainer .head h2 {
+  color: #e0e0e0;
+  font-size: 18px;
+  margin: 0px;
+}
+.dashboardContainer .head p {
+  color: #ffffff;
+  font-size: 40px;
+  font-weight: 700;
+  margin: 0px;
+}
+.dashboardContainer .head span {
+  color: #dfdcdc;
+  font-size: 14px;
+  font-weight: 600;
+}
+.dashboardContainer .head,
+.stat,
+.history {
+  background-color: #ffffff;
+  border-radius: 25px;
+  padding: 5%;
+}
+.dashboardContainer .head button {
+  border: 1px solid #ffffff;
+  height: 57px;
+  width: 162px;
+}
+.history {
+  padding: 10%;
+}
+.history h2 {
+  color: #3a3d42;
+  font-size: 18px;
+  font-weight: 700;
+}
+.historyHead {
+  margin-bottom: 40px;
+}
+.historyHead h2 {
+  margin: 0px;
+}
+.history .list {
+  margin-bottom: 40px;
+}
+.history .list img {
+  height: 56px;
+  width: 56px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+.history .list h5,
+.history .list p {
+  font-size: 16px;
+  font-weight: 700;
+}
+.history .list h5 {
+  margin-bottom: 9px;
+}
+.history .list span {
+  font-size: 14px;
+}
+.history .list p {
+  font-size: 14px;
+}
+.transfer {
+  color: #1ec15f;
+}

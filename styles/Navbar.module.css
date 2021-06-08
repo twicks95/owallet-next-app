@@ -1,0 +1,105 @@
+@media (max-width: 768px) {
+  .avatar {
+    height: 100% !important;
+    position: relative;
+    width: 38px !important;
+  }
+
+  .avatar,
+  .avatar img {
+    border-radius: 10px;
+  }
+
+  .userInfo p {
+    font-size: 16px !important;
+  }
+
+  .userInfo span {
+    font-size: 11px !important;
+  }
+
+  .bell {
+    width: 18px;
+  }
+}
+
+@media (max-width: 576px) {
+  .meatBalls {
+    align-items: center;
+    cursor: pointer;
+    display: flex !important;
+    justify-content: space-evenly;
+    width: 50px;
+  }
+
+  .ball {
+    background-color: #3a3d42;
+    border-radius: 50%;
+    height: 8px;
+    width: 8px;
+  }
+
+  .meatBalls:hover {
+  }
+
+  .userNotif {
+    display: none !important;
+  }
+}
+
+.meatBalls {
+  display: none;
+}
+
+.navbarContainer {
+  background-color: #ffffff;
+  box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.08);
+  color: #6379f4;
+  font-size: 29px;
+  font-weight: 700;
+  padding: 2% 10%;
+}
+
+.userNotif {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  height: 52px;
+  position: relative;
+  width: 52px;
+}
+
+.avatar img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.avatar,
+.avatar img {
+  border-radius: 10px;
+}
+
+.userInfo {
+  margin: 0px 30px 0px 20px;
+  text-align: start;
+}
+
+.userInfo p {
+  color: #3a3d42;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+.userInfo span {
+  color: rgba(58, 61, 66, 0.774);
+  font-size: 13px;
+}
+
+.avatar,
+.bell {
+  cursor: pointer;
+}
