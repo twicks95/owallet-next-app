@@ -1,7 +1,7 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import Head from "next/head";
-import "../styles/globals.css";
 import { IconContext } from "phosphor-react";
+import "bootstrap/dist/css/bootstrap.css";
+import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
   return (

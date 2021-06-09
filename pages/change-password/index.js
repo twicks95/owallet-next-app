@@ -93,7 +93,7 @@ export default function ChangePassword(props) {
         <div className={`container-fluid ${styles.outerContainer}`}>
           <div className="row row-cols-1 row-cols-md-2 h-100">
             <div className={`col-md-3 ${styles.navSide}`}>
-              <PageNav page="profile" />
+              <PageNav data={props.data} page="profile" />
             </div>
             <div className={`col-md-9 ${styles.changePasswordSide}`}>
               <div className={`${styles.changePasswordContainer}`}>

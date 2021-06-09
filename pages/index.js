@@ -1,101 +1,138 @@
-// import Head from "next/head";
-// import Image from "next/image";
-// import styles from "../styles/Home.module.css";
-// import { useEffect, useState } from "react";
-// import Layout from "../components/Layout";
-// import Navbar from "../components/module/Navbar";
-// import styles from "../styles/Home.module.css";
-// import axiosApiInstances from "../utils/axios";
-
-// export default function Home() {
-//   const [users, setUsers] = useState([]);
-
-//   useEffect(() => {
-//     console.log("Get Data!");
-//     getUsers();
-//   }, []);
-
-//   const getUsers = () => {
-//     axiosApiInstances
-//       .get("users")
-//       .then((res) => {
-//         console.log(res.data);
-//         setUsers(res.data);
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//       });
-//   };
-
-//   return (
-//     <Layout title="Home">
-//       <Navbar />
-//       <h1 className={styles.titleHead}>Home page</h1>
-//       <h2>{process.env.APP_NAME}</h2>
-//       {users.map((item, index) => {
-//         return (
-//           <div key={index}>
-//             <h3>Name: {item.name}</h3>
-//             <h4>Phone: {item.phone}</h4>
-//             <h5>Email: {item.email}</h5>
-//             <div className="d-grid gap-2">
-//               <button className="btn btn-primary" type="button">
-//                 Button
-//               </button>
-//             </div>
-//           </div>
-//         );
-//       })}
-//     </Layout>
-//   );
-// }
-
-// SSR ==============================================
 import { useState } from "react";
 import Layout from "../components/Layout";
+import styles from "../styles/Dashboard.module.css";
+import Cookies from "next-cookies";
 import Navbar from "../components/module/Navbar";
-import styles from "../styles/Home.module.css";
+import Footer from "../components/module/Footer";
+import PageNav from "../components/module/PageNav";
 import axiosApiInstances from "../utils/axios";
 import { authorizationPage } from "../middleware/authorizationPage";
+import { Button } from "react-bootstrap";
+import { ArrowUp, IconContext, Plus } from "phosphor-react";
+import Link from "next/link";
 
 export async function getServerSideProps(context) {
   const data = await authorizationPage(context);
-  console.log(data);
-
   const res = await axiosApiInstances
-    .get("users")
+    .get(`user/${data.userId}`)
     .then((res) => {
-      // console.log(res.data);
       return res.data;
     })
     .catch((err) => {
-      // console.log(err);
+      console.log(err.response);
       return [];
     });
   return {
-    props: { users: res, userLogin: data }, // will be passed to the page component as props
+    props: { data: res },
   };
 }
 
 export default function Home(props) {
-  const [users, setUsers] = useState(props.users);
-  // console.log(users);
+  // const [users, setUsers] = useState(props.users);
+  const { balance, user_phone } = props.data.data[0];
+
   return (
-    <Layout title="Home">
-      <Navbar />
-      <h1 className={styles.titleHead}>Home page</h1>
-      <h2>{process.env.APP_NAME}</h2>
-      {users.map((item, index) => {
-        return (
-          <div key={index}>
-            <div className="d-grid gap-2">
-              <button className="btn btn-primary" type="button">
-                {item.name}
-              </button>
+    <Layout title="Dashboard">
+      <Navbar data={props.data} />
+      <div className={`container-fluid ${styles.outerContainer}`}>
+        <div className="row row-cols-1 row-cols-md-2 h-100">
+          <div className={`col-md-3 ${styles.navSide}`}>
+            <PageNav data={props.data} page="dashboard" />
+          </div>
+          <div className={`col-md-9 ${styles.profileSide}`}>
+            <div className={`row row-cols-1 gy-3 ${styles.dashboardContainer}`}>
+              <IconContext.Provider
+                value={{
+                  color: "#B5B0ED",
+                  size: "1.2em",
+                  weight: "bold",
+                  mirrored: false,
+                }}
+              >
+                <div
+                  className={`col-12 d-flex align-items-center justify-content-between ${styles.head}`}
+                >
+                  <div className="text-start">
+                    <h2>Balance</h2>
+                    <p>Rp{balance}</p>
+                    <span>+62 {user_phone}</span>
+                  </div>
+                  <div className="d-flex flex-column gap-3">
+                    <Button
+                      variant="primary"
+                      className={`d-flex align-items-center justify-content-evenly`}
+                    >
+                      <ArrowUp className="me-2" />
+                      Transfer
+                    </Button>
+                    <Button
+                      variant="primary"
+                      className={`d-flex align-items-center justify-content-evenly`}
+                    >
+                      <Plus className="me-2" />
+                      Top Up
+                    </Button>
+                  </div>
+                </div>
+              </IconContext.Provider>
+              <div className={`col-12 p-0 ${styles.main}`}>
+                <div className={`row row-cols-2`}>
+                  <div className={`col-6 pe-0`}>
+                    <div className={`${styles.stat}`}>Graph</div>
+                  </div>
+                  <div className={`col-6`}>
+                    <div className={`${styles.history}`}>
+                      <div
+                        className={`d-flex align-items-center justify-content-between ${styles.historyHead}`}
+                      >
+                        <h2>Transaction History</h2>
+                        <Link href="/">See all</Link>
+                      </div>
+                      <div
+                        className={`d-flex align-items-center justify-content-between ${styles.list}`}
+                      >
+                        <div className="d-flex text-start">
+                          <img src="/user2.png" className="me-2" />
+                          <div className="d-flex flex-column justify-content-center">
+                            <h5 className="m-0">Samuel Umtiti</h5>
+                            <span>Transfer</span>
+                          </div>
+                        </div>
+                        <p className={`m-0 ${styles.transfer}`}>+Rp50.000</p>
+                      </div>
+                      <div
+                        className={`d-flex align-items-center justify-content-between ${styles.list}`}
+                      >
+                        <div className="d-flex text-start">
+                          <img src="/user2.png" className="me-2" />
+                          <div className="d-flex flex-column justify-content-center">
+                            <h5 className="m-0">Samuel Umtiti</h5>
+                            <span>Transfer</span>
+                          </div>
+                        </div>
+                        <p className={`m-0 ${styles.transfer}`}>+Rp50.000</p>
+                      </div>
+                      <div
+                        className={`d-flex align-items-center justify-content-between ${styles.list}`}
+                      >
+                        <div className="d-flex text-start">
+                          <img src="/user2.png" className="me-2" />
+                          <div className="d-flex flex-column justify-content-center">
+                            <h5 className="m-0">Samuel Umtiti</h5>
+                            <span>Transfer</span>
+                          </div>
+                        </div>
+                        <p className={`m-0 ${styles.transfer}`}>+Rp50.000</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        );
-      })}
+        </div>
+      </div>
+      <Footer />
     </Layout>
   );
 }
