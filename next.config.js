@@ -13,6 +13,10 @@ module.exports = {
         source: "/register",
         destination: "/auth/register",
       },
+      {
+        source: "/create-pin",
+        destination: "/auth/create-pin",
+      },
     ];
   },
 };
