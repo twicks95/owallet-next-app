@@ -3,11 +3,6 @@ import { useRouter } from "next/router";
 import styles from "../../styles/Navbar.module.css";
 import { BellSimple } from "phosphor-react";
 
-// export async function getServerSideProps(context) {
-//   await authorizationPage(context);
-//   return { props: {} };
-// }
-
 export default function Navbar(props) {
   const router = useRouter();
   const { user_id, user_image, user_name, user_phone } = props.data.data[0];

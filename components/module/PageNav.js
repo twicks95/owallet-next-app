@@ -13,6 +13,7 @@ import styles from "../../styles/PageNav.module.css";
 export default function PageNav(props) {
   const router = useRouter();
   const { page } = props;
+  const { user_id } = props.data.data[0];
 
   const handleLogout = () => {
     Cookie.remove("token");
@@ -33,7 +34,7 @@ export default function PageNav(props) {
         router.push("/topup");
         break;
       case "profile":
-        router.push("/profile/2");
+        router.push(`/profile/${user_id}`);
         break;
       default:
         break;
