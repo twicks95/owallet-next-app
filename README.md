@@ -1,4 +1,4 @@
-﻿<h1 align='center'>React JS - JobShall </h1>
+﻿<h1 align='center'>Next JS - Owallet </h1>
   <p align="center">
     <a href="link_deploy">View Demo</a>
     ·
