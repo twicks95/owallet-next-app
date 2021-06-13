@@ -71,6 +71,27 @@
 .history .list p {
   font-size: 14px;
 }
+.stat {
+  height: 100%;
+}
 .transfer {
   color: #1ec15f;
+}
+
+@media (max-width: 576px) {
+  .dashboardContainer .head p {
+    font-size: 32px;
+  }
+  .dashboardContainer .head h2 {
+    font-size: 14px;
+  }
+  .dashboardContainer .head span {
+    font-size: 10px;
+  }
+
+  .dashboardContainer .head button {
+    font-size: 12px;
+    height: 46px;
+    width: 90px;
+  }
 }

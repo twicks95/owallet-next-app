@@ -70,6 +70,7 @@
   align-items: center;
 }
 
+.phoneLabel,
 .emailLabel,
 .nameLabel,
 .passwordLabel {
@@ -103,6 +104,7 @@
   color: #6379f4;
 }
 
+.deviceMobileCamera,
 .envelope,
 .eye,
 .eyeSlash,

@@ -1,0 +1,98 @@
+@media (min-width: 768px) {
+  .landingNav a {
+    font-size: 29px !important;
+  }
+
+  .landingNav button {
+    font-size: 18px !important;
+    height: 59px !important;
+    width: 120px;
+  }
+  .landingNav div button:first-child {
+    margin-right: 10px !important;
+  }
+
+  .hero div {
+    width: 50% !important;
+  }
+
+  .hero img {
+    border: 1px solid red;
+    position: absolute;
+    width: 35%;
+    top: 20%;
+    right: 10%;
+  }
+}
+
+.hero {
+  background-color: #6379f4;
+  height: 100vh;
+  position: relative;
+  color: #ffffff;
+  text-align: start;
+  padding: 10% 10% 0px;
+  display: flex;
+  align-items: center;
+}
+
+.hero div {
+  width: 100%;
+}
+
+.hero h1 {
+  font-size: 46px;
+  font-weight: 800;
+  line-height: 78px;
+  margin-bottom: 0px;
+}
+
+.hero p {
+  font-size: 18px;
+  line-height: 31px;
+  margin: 40px 0px 50px;
+}
+
+.hero button {
+  width: 173px;
+}
+
+.landingNav {
+  background-color: #6379f4;
+  position: absolute;
+  z-index: 99;
+  width: 100%;
+  display: flex;
+  padding: 5% 10%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.landingNav a {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 24px;
+  /* font-size: 29px; */
+}
+
+.landingNav button {
+  font-size: 10px;
+  height: 36px;
+}
+
+.landingNav button:hover,
+.hero button:hover {
+  box-shadow: 0px 10px 20px rgb(76, 100, 241);
+}
+
+.landingNav div button:first-child {
+  margin-right: 5px;
+}
+
+.btnLight {
+  color: #6379f4;
+}
+
+.btnLight:hover {
+  color: #425cf1;
+}
