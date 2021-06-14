@@ -16,20 +16,20 @@ export async function getServerSideProps(context) {
   const res = await axiosApiInstances
     .get(`user/${data.userId}`)
     .then((res) => {
-      return res.data;
+      return res.data.data;
     })
     .catch((err) => {
       console.log(err);
       return [];
     });
   return {
-    props: { data: res },
+    props: { user: res[0] },
   };
 }
 
 export default function Profile(props) {
   const router = useRouter();
-  const { user_id, user_image, user_name, user_phone } = props.data.data[0];
+  const { user_id, user_image, user_name, user_phone } = props.user;
   const [image, setImage] = useState(null);
   const [message, setMessage] = useState("");
   const [smShow, setSmShow] = useState(false);
@@ -47,13 +47,12 @@ export default function Profile(props) {
     }
 
     axiosApiInstances
-      .patch(`user/update/image/${user_id}`, formData)
+      .patch(`user/update/image/${id}`, formData)
       .then((res) => {
-        console.log(res);
         setSmShow(false);
         setImageSuccess(true);
         setImage(null);
-        router.push(`/profile/${user_id}`);
+        router.push(`/profile/${id}`);
       })
       .catch((err) => {
         setMessage(err.response.data.msg);
@@ -69,7 +68,7 @@ export default function Profile(props) {
 
   return (
     <Layout title="Profile">
-      <Navbar data={props.data} />
+      <Navbar user={props.user} />
       <Modal
         size="sm"
         show={smShow}
@@ -116,9 +115,9 @@ export default function Profile(props) {
         </Modal.Footer>
       </Modal>
       <div className={`container-fluid ${styles.outerContainer}`}>
-        <div className="row row-cols-1 row-cols-md-2 h-100">
+        <div className="row row-cols-1 row-cols-md-2 h-100 gy-3 gy-md-0">
           <div className={`col-md-3 ${styles.navSide}`}>
-            <PageNav data={props.data} page="profile" />
+            <PageNav user={props.user} page="profile" />
           </div>
           <div className={`col-md-9 ${styles.profileSide}`}>
             <div
@@ -141,7 +140,7 @@ export default function Profile(props) {
                   onChange={(e) => handleImage(e)}
                 />
                 <label
-                  for="image"
+                  htmlFor="image"
                   className={`d-flex align-items-center ${styles.edit}`}
                 >
                   <IconContext.Provider
@@ -158,23 +157,23 @@ export default function Profile(props) {
                 </label>
               </div>
               <h1>{user_name}</h1>
-              <h3>+62 {user_phone}</h3>
+              <h3>+62 {user_phone.substr(1)}</h3>
               <ul className="mt-5">
                 <li
                   className={`d-flex align-items-center justify-content-between`}
-                  onClick={() => router.push(`/personal-info/${user_id}`)}
+                  onClick={() => router.push(`/profile/personal-info`)}
                 >
                   Personal Information <ArrowRight />
                 </li>
                 <li
                   className={`d-flex align-items-center justify-content-between`}
-                  onClick={() => router.push("/change-password")}
+                  onClick={() => router.push("/profile/change-password")}
                 >
                   Change Password <ArrowRight />
                 </li>
                 <li
                   className={`d-flex align-items-center justify-content-between`}
-                  onClick={() => router.push("/change-pin")}
+                  onClick={() => router.push("/profile/change-pin")}
                 >
                   Change Pin <ArrowRight />
                 </li>
