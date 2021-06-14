@@ -1,64 +1,40 @@
 import { useState } from "react";
-import { useRouter } from "next/router";
-import { authorizationPage } from "middleware/authorizationPage";
+import { unauthorizationPage } from "middleware/authorizationPage";
 import axiosApiInstances from "utils/axios";
 import Layout from "components/Layout";
-import styles from "styles/CreatePin.module.css";
+import styles from "styles/ResetPassword.module.css";
+import { EnvelopeSimple, IconContext } from "phosphor-react";
 
 export async function getServerSideProps(context) {
-  const data = await authorizationPage(context);
-  const res = await axiosApiInstances
-    .get(`user/${data.userId}`)
-    .then((res) => {
-      return res.data.data;
-    })
-    .catch((err) => {
-      console.log(err);
-      return [];
-    });
-
-  return {
-    props: { user: res[0] },
-  };
+  await unauthorizationPage(context);
+  return { props: {} };
 }
 
 export default function Register(props) {
-  const router = useRouter();
-  const [pin, setPin] = useState({});
   const [loading, setLoading] = useState(false);
-  const { user_id } = props.user;
+  const [email, setEmail] = useState("");
 
-  const changeText = (event) => {
-    if (event.target.value) {
-      const nextSibling = document.getElementById(
-        `pin-${parseInt(event.target.name, 10) + 1}`
-      );
-
-      if (nextSibling !== null) {
-        nextSibling.focus();
-      }
-    }
-    setPin({ ...pin, [`pin${event.target.name}`]: event.target.value });
-  };
-
-  const handleCreatePin = (e, id) => {
+  const handleConfirm = (e) => {
     e.preventDefault();
     setLoading(true);
-    const allPin =
-      pin.pin1 + pin.pin2 + pin.pin3 + pin.pin4 + pin.pin5 + pin.pin6;
 
-    axiosApiInstances
-      .patch(`auth/pin/create/${id}`, { userPin: allPin })
-      .then(() => {
-        router.push("/create-pin/success");
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
+    // window.setTimeout(() => {
+    //   axiosApiInstances
+    //     .patch(`auth/pin/create/${id}`, { userPin: allPin })
+    //     .then((res) => {
+    //       router.push("/dashboard");
+    //     })
+    //     .catch((err) => {
+    //       console.log(err.response);
+    //     })
+    //     .finally(() => {
+    //       setLoading(false);
+    //     });
+    // }, 2000);
   };
 
   return (
-    <Layout title="Create Pin">
+    <Layout title="Reset Password">
       <div className={`d-flex ${styles.outerContainer}`}>
         <div className={`text-start d-flex flex-column ${styles.leftBanner}`}>
           <svg
@@ -123,74 +99,54 @@ export default function Register(props) {
         </div>
         <div className={`text-start ${styles.formSection}`}>
           <h3 className="mb-4">
-            Secure Your Account, Your Wallet, and Your Data With 6 Digits PIN
-            That You Created Yourself.
+            Did You Forgot Your Password? Don’t Worry, You Can Reset Your
+            Password In a Minutes.
           </h3>
           <p>
-            Create 6 digits pin to secure all your money and your data in
-            Zwallet app. Keep it secret and don’t tell anyone about your Zwallet
-            account password and the PIN.
+            To reset your password, you must type your e-mail and we will send a
+            link to your email and you will be directed to the reset password
+            screens.
           </p>
           <form
             className={`my-5 p-0 ${styles.formContainer}`}
-            onSubmit={(e) => handleCreatePin(e, user_id)}
+            onSubmit={handleConfirm}
           >
-            <div className={styles.inputs}>
+            <div className={`mb-5 ${styles.inputGroup}`}>
+              <label
+                htmlFor="email"
+                className={`m-0 form-labe ${email && styles.moveLabel} ${
+                  styles.emailLabel
+                }`}
+              >
+                Email address
+              </label>
+              <IconContext.Provider
+                value={{
+                  color: `${email ? "#6379f4" : "rgba(169, 169, 169, 0.8)"}`,
+                  size: "1.2em",
+                  weight: "bold",
+                  mirrored: false,
+                }}
+              >
+                <EnvelopeSimple className={`${styles.envelope}`} />
+              </IconContext.Provider>
               <input
-                type="text"
-                name="1"
-                id="pin-1"
-                maxLength="1"
-                onChange={(e) => changeText(e)}
-              />
-              <input
-                type="text"
-                name="2"
-                id="pin-2"
-                maxLength="1"
-                onChange={(e) => changeText(e)}
-              />
-              <input
-                type="text"
-                name="3"
-                id="pin-3"
-                maxLength="1"
-                onChange={(e) => changeText(e)}
-              />
-              <input
-                type="text"
-                name="4"
-                id="pin-4"
-                maxLength="1"
-                onChange={(e) => changeText(e)}
-              />
-              <input
-                type="text"
-                name="5"
-                id="pin-5"
-                maxLength="1"
-                onChange={(e) => changeText(e)}
-              />
-              <input
-                type="text"
-                name="6"
-                id="pin-6"
-                maxLength="1"
-                onChange={(e) => changeText(e)}
+                type="email"
+                id="email"
+                className={`form-control shadow-none email-input ${styles.emailInput}`}
+                name="email"
+                aria-describedby="emailHelp"
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            {!pin.pin1 ||
-            !pin.pin2 ||
-            !pin.pin3 ||
-            !pin.pin4 ||
-            !pin.pin5 ||
-            !pin.pin6 ? (
+
+            {!email ? (
               <button
                 type="submit"
                 className="btn btn-primary self-column"
                 disabled
               >
-                Create my pin
+                Confirm
               </button>
             ) : loading ? (
               <button
@@ -207,7 +163,7 @@ export default function Register(props) {
               </button>
             ) : (
               <button type="submit" className="btn btn-primary">
-                Create my pin
+                Confirm
               </button>
             )}
           </form>

@@ -1,7 +1,11 @@
-import Cookie from "js-cookie";
-import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import Cookie from "js-cookie";
+import { unauthorizationPage } from "middleware/authorizationPage";
+import axiosApiInstances from "utils/axios";
+import Layout from "components/Layout";
+import styles from "styles/Login.module.css";
 import {
   IconContext,
   EnvelopeSimple,
@@ -10,10 +14,6 @@ import {
   LockSimple,
   WarningCircle,
 } from "phosphor-react";
-import Layout from "../../../components/Layout";
-import styles from "../../../styles/Login.module.css";
-import { unauthorizationPage } from "../../../middleware/authorizationPage";
-import axiosApiInstances from "../../../utils/axios";
 
 export async function getServerSideProps(context) {
   await unauthorizationPage(context);
@@ -22,15 +22,16 @@ export async function getServerSideProps(context) {
 
 export default function Login() {
   const router = useRouter();
-  const [form, setForm] = useState({ userEmail: "", userPassword: "" });
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [form, setForm] = useState({ userEmail: "", userPassword: "" });
 
   const handleLogin = (e) => {
     e.preventDefault();
     setLoading(true);
+    setError(false);
     window.setTimeout(() => {
       axiosApiInstances
         .post("auth/login", form)
@@ -45,19 +46,16 @@ export default function Login() {
             secure: true,
           });
           if (user_pin) {
-            router.push("/");
+            router.push("/dashboard");
           } else {
-            router.push("/create-pin");
+            router.push(`/create-pin`);
           }
         })
         .catch((err) => {
           setMessage(err.response.data.msg);
           setError(true);
-        })
-        .finally(() => {
-          setLoading(false);
         });
-    }, 2000);
+    }, 3000);
   };
 
   const handleText = (e) => {
@@ -120,7 +118,7 @@ export default function Login() {
                 style={{ width: "50%", transform: "rotate(-7.27deg)" }}
               />
               <img
-                src="/phone2png.png"
+                src="/phone2.png"
                 style={{
                   width: "50%",
                   marginLeft: "-20%",
@@ -172,10 +170,10 @@ export default function Login() {
               )}
               <div className={`mb-5 ${styles.inputGroup}`}>
                 <label
+                  htmlFor="email"
                   className={`m-0 form-labe ${
                     form.userEmail && styles.moveLabel
                   } ${styles.emailLabel}`}
-                  for="email"
                 >
                   Email address
                 </label>
@@ -191,10 +189,10 @@ export default function Login() {
               </div>
               <div className={`mb-3 ${styles.inputGroup}`}>
                 <label
+                  htmlFor="password"
                   className={`m-0 form-label ${
                     form.userPassword && styles.moveLabel
                   } ${styles.passwordLabel}`}
-                  for="password"
                 >
                   Password
                 </label>

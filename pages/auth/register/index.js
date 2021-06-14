@@ -1,10 +1,12 @@
-import { useState } from "react";
 import Link from "next/link";
+import { useState } from "react";
 import { useRouter } from "next/router";
-import Layout from "../../../components/Layout";
-import styles from "../../../styles/Register.module.css";
-import { unauthorizationPage } from "../../../middleware/authorizationPage";
+import { unauthorizationPage } from "middleware/authorizationPage";
+import axiosApiInstances from "utils/axios";
+import Layout from "components/Layout";
+import styles from "styles/Register.module.css";
 import {
+  DeviceMobileCamera,
   EnvelopeSimple,
   Eye,
   EyeSlash,
@@ -13,7 +15,6 @@ import {
   User,
   WarningCircle,
 } from "phosphor-react";
-import axiosApiInstances from "../../../utils/axios";
 
 export async function getServerSideProps(context) {
   await unauthorizationPage(context);
@@ -22,14 +23,14 @@ export async function getServerSideProps(context) {
 
 export default function Register() {
   const router = useRouter();
-  const [error, setError] = useState(false);
   const [form, setForm] = useState({
     userName: "",
     userEmail: "",
     userPassword: "",
   });
-  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleRegister = (e) => {
@@ -111,7 +112,7 @@ export default function Register() {
                 style={{ width: "50%", transform: "rotate(-7.27deg)" }}
               />
               <img
-                src="/phone2png.png"
+                src="/phone2.png"
                 style={{
                   width: "50%",
                   marginLeft: "-20%",
@@ -160,10 +161,10 @@ export default function Register() {
               )}
               <div className={`mb-5 ${styles.inputGroup}`}>
                 <label
+                  htmlFor="name"
                   className={`m-0 form-label ${
                     form.userName && styles.moveLabel
                   } ${styles.nameLabel}`}
-                  for="name"
                 >
                   Name
                 </label>
@@ -176,12 +177,13 @@ export default function Register() {
                   onChange={(e) => handleText(e)}
                 />
               </div>
+
               <div className={`mb-5 ${styles.inputGroup}`}>
                 <label
+                  htmlFor="email"
                   className={`m-0 form-labe ${
                     form.userEmail && styles.moveLabel
                   } ${styles.emailLabel}`}
-                  for="email"
                 >
                   Email address
                 </label>
@@ -195,15 +197,35 @@ export default function Register() {
                   onChange={(e) => handleText(e)}
                 />
               </div>
+              <div className={`mb-5 ${styles.inputGroup}`}>
+                <label
+                  htmlFor="phone"
+                  className={`m-0 form-labe ${
+                    form.userPhone && styles.moveLabel
+                  } ${styles.phoneLabel}`}
+                >
+                  Phone Number
+                </label>
+                <DeviceMobileCamera
+                  className={`${styles.deviceMobileCamera}`}
+                />
+                <input
+                  type="text"
+                  id="phone"
+                  className={`form-control shadow-none email-input ${styles.phoneInput}`}
+                  name="userPhone"
+                  onChange={(e) => handleText(e)}
+                />
+              </div>
               <div
                 style={{ marginBottom: "90px" }}
                 className={`${styles.inputGroup}`}
               >
                 <label
+                  htmlFor="password"
                   className={`m-0 form-label ${
                     form.userPassword && styles.moveLabel
                   } ${styles.passwordLabel}`}
-                  for="password"
                 >
                   Password
                 </label>
@@ -227,7 +249,10 @@ export default function Register() {
                   onChange={(e) => handleText(e)}
                 />
               </div>
-              {!form.userName || !form.userEmail || !form.userPassword ? (
+              {!form.userName ||
+              !form.userEmail ||
+              !form.userPhone ||
+              !form.userPassword ? (
                 <button type="submit" className="btn btn-primary" disabled>
                   Sign Up
                 </button>
