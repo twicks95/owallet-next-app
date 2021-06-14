@@ -7,7 +7,7 @@ export function unauthorizationPage(context) {
     if (allCookies.token) {
       return context.res
         .writeHead(302, {
-          Location: "/",
+          Location: "/dashboard",
         })
         .end();
     }
