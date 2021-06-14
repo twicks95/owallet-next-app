@@ -5,7 +5,7 @@ import { BellSimple } from "phosphor-react";
 
 export default function Navbar(props) {
   const router = useRouter();
-  const { user_id, user_image, user_name, user_phone } = props.data.data[0];
+  const { user_id, user_image, user_name, user_phone } = props.user;
 
   const handleProfile = (id) => {
     router.push(`/profile/${id}`);
@@ -34,7 +34,7 @@ export default function Navbar(props) {
           className={`d-flex flex-column justify-content-center ${styles.userInfo}`}
         >
           <p>{user_name}</p>
-          <span>+62 {user_phone}</span>
+          <span>+62 {user_phone.substr(1)}</span>
         </div>
         <BellSimple size={24} className={styles.bell} />
       </div>

@@ -8,12 +8,13 @@ import {
   SquaresFour,
   User,
 } from "phosphor-react";
-import styles from "../../styles/PageNav.module.css";
+import styles from "styles/PageNav.module.css";
 
 export default function PageNav(props) {
   const router = useRouter();
   const { page } = props;
-  const { user_id } = props.data.data[0];
+  const { user_id } = props.user;
+  // const user_id = "1";
 
   const handleLogout = () => {
     Cookie.remove("token");
@@ -58,10 +59,10 @@ export default function PageNav(props) {
                 mirrored: false,
               }}
             >
-              <SquaresFour className="me-3" />
+              <SquaresFour className="mb-2 mb-md-0 me-0 me-md-3" />
             </IconContext.Provider>
           ) : (
-            <SquaresFour className="me-3" />
+            <SquaresFour className="mb-2 mb-md-0 me-0 me-md-3" />
           )}
           <span>Dashboard</span>
         </li>
@@ -78,10 +79,10 @@ export default function PageNav(props) {
                 mirrored: false,
               }}
             >
-              <ArrowUp className="me-3" />
+              <ArrowUp className="mb-2 mb-md-0 me-0 me-md-3" />
             </IconContext.Provider>
           ) : (
-            <ArrowUp className="me-3" />
+            <ArrowUp className="mb-2 mb-md-0 me-0 me-md-3" />
           )}
           <span>Transfer</span>
         </li>
@@ -98,10 +99,10 @@ export default function PageNav(props) {
                 mirrored: false,
               }}
             >
-              <Plus className="me-3" />
+              <Plus className="mb-2 mb-md-0 me-0 me-md-3" />
             </IconContext.Provider>
           ) : (
-            <Plus className="me-3" />
+            <Plus className="mb-2 mb-md-0 me-0 me-md-3" />
           )}
           <span>Top Up</span>
         </li>
@@ -118,15 +119,15 @@ export default function PageNav(props) {
                 mirrored: false,
               }}
             >
-              <User className="me-3" />
+              <User className="mb-2 mb-md-0 me-0 me-md-3" />
             </IconContext.Provider>
           ) : (
-            <User className="me-3" />
+            <User className="mb-2 mb-md-0 me-0 me-md-3" />
           )}
           <span>Profile</span>
         </li>
         <li onClick={handleLogout}>
-          <SignOut className="me-3" />
+          <SignOut className="mb-2 mb-md-0 me-0 me-md-3" />
           <span>Logout</span>
         </li>
       </ul>
