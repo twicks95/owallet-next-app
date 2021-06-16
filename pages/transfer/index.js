@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { authorizationPage } from "middleware/authorizationPage";
 import axiosApiInstances from "utils/axios";
 import Layout from "components/Layout";
 import styles from "styles/Transfer.module.css";
@@ -7,7 +8,6 @@ import Navbar from "components/module/Navbar";
 import Footer from "components/module/Footer";
 import PageNav from "components/module/PageNav";
 import { MagnifyingGlass } from "phosphor-react";
-import { authorizationPage } from "middleware/authorizationPage";
 
 export async function getServerSideProps(context) {
   const data = await authorizationPage(context);
@@ -21,23 +21,16 @@ export async function getServerSideProps(context) {
       return [];
     });
 
-  // Ambil semua users
-  // const users = await axiosApiInstances.get("user/all").then((res) => {
-  //   return res.data.data;
-  // });
-
   return {
     props: { user: res[0] },
-    // props: {},
-    // props: { users: users, user: res[0] },
   };
 }
 
 export default function Transfer(props) {
   const router = useRouter();
-  // const { users } = props;
   const [phone, setPhone] = useState("");
   const [user, setUser] = useState([]);
+  const [message, setMessage] = useState("");
 
   const handleSearch = (data) => {
     axiosApiInstances
@@ -46,7 +39,8 @@ export default function Transfer(props) {
         setUser(res.data.data);
       })
       .catch((err) => {
-        console.log(err.response);
+        setMessage(err.response.data.msg);
+        setUser([]);
       });
   };
 
@@ -61,7 +55,6 @@ export default function Transfer(props) {
         <div className="row row-cols-1 row-cols-md-2 h-100 gy-3 gy-md-0">
           <div className={`col-md-3 ${styles.navSide}`}>
             <PageNav user={props.user} page="transfer" />
-            {/* <PageNav page="transfer" /> */}
           </div>
           <div className={`col-md-9 ${styles.personalInfoSide}`}>
             <div className={`text-start ${styles.searchReceiverContainer}`}>
@@ -74,13 +67,6 @@ export default function Transfer(props) {
                   onChange={(e) => setPhone(e.target.value)}
                   onKeyUp={(e) => e.key === "Enter" && handleSearch(phone)}
                 />
-                {/* <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={() => handleSearch(phone)}
-                >
-                  Search
-                </button> */}
               </div>
               <div className={styles.receiverLists}>
                 {user.length > 0 ? (
@@ -107,7 +93,30 @@ export default function Transfer(props) {
                     </div>
                   ))
                 ) : (
-                  <></>
+                  <div className="d-flex flex-column align-items-center justify-content-center h-100">
+                    <p
+                      style={{
+                        color: "rgb(169, 169, 169)",
+                        fontSize: "38px",
+                        fontWeight: "800",
+                      }}
+                      className="m-0"
+                    >
+                      No Receiver.
+                    </p>
+                    <span
+                      style={{
+                        color: "rgb(169, 169, 169)",
+                        fontSize: "14px",
+                        textAlign: "center",
+                        width: "60%",
+                      }}
+                    >
+                      {message
+                        ? message
+                        : "You can find your receiver by enter their phone number in the search box above."}
+                    </span>
+                  </div>
                 )}
               </div>
             </div>

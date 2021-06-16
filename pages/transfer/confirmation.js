@@ -8,6 +8,7 @@ import Footer from "components/module/Footer";
 import PageNav from "components/module/PageNav";
 import styles from "styles/Confirmation.module.css";
 import { Button, Modal } from "react-bootstrap";
+import { WarningCircle } from "phosphor-react";
 import moment from "moment";
 
 export async function getServerSideProps(context) {
@@ -28,12 +29,15 @@ export async function getServerSideProps(context) {
 
 export default function PersonalInfo(props) {
   const router = useRouter();
-  const [pin, setPin] = useState({});
-  const [receiver, setReceiver] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
   const { balance, user_id, user_pin } = props.user;
   const { receiverId, amount, note } = router.query;
+
+  const [pin, setPin] = useState({});
+  const [message, setMessage] = useState("");
+  const [receiver, setReceiver] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [errorPin, setErrorPin] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const date = new Date(Date.now());
 
   useEffect(() => {
@@ -56,11 +60,13 @@ export default function PersonalInfo(props) {
   };
 
   const handleContinue = () => {
+    setLoading(false);
     setShowModal(true);
   };
 
   const handleTransfer = (e) => {
     e.preventDefault();
+    setErrorPin(false);
     setLoading(true);
     const allPin =
       pin.pin1 + pin.pin2 + pin.pin3 + pin.pin4 + pin.pin5 + pin.pin6;
@@ -71,8 +77,22 @@ export default function PersonalInfo(props) {
         userPin: user_pin,
       })
       .then((res) => {
-        console.log(res);
-        router.push("/transfer/status");
+        const data = {
+          receiverId: receiverId,
+          senderId: user_id,
+          amount,
+          notes: note,
+        };
+        axiosApiInstances.post("transaction", data).then((res) => {
+          router.push(
+            `/transfer/status?receiverId=${receiverId}&amount=${amount}&note=${note}`
+          );
+        });
+      })
+      .catch(() => {
+        setErrorPin(true);
+        setLoading(false);
+        setMessage("Cannot proceed the transfer. Incorrect PIN!");
       });
   };
 
@@ -99,8 +119,17 @@ export default function PersonalInfo(props) {
           money.
           <form
             className={`my-5 p-0 ${styles.formContainer}`}
-            onSubmit={handleTransfer}
+            onSubmit={(e) => handleTransfer(e)}
           >
+            {errorPin && (
+              <div
+                className={`alert alert-danger d-flex align-items-center`}
+                role="alert"
+              >
+                <WarningCircle color="#842029" className="me-2" />
+                <div>{message}</div>
+              </div>
+            )}
             <div className={styles.inputs}>
               <input
                 type="text"
@@ -145,17 +174,22 @@ export default function PersonalInfo(props) {
                 onChange={(e) => changeText(e)}
               />
             </div>
+
             {!pin.pin1 ||
             !pin.pin2 ||
             !pin.pin3 ||
             !pin.pin4 ||
             !pin.pin5 ||
             !pin.pin6 ? (
-              <Button type="submit" disabled>
-                Transfer
-              </Button>
+              <button
+                type="submit"
+                className="btn btn-primary self-column"
+                disabled
+              >
+                Transfer money
+              </button>
             ) : loading ? (
-              <Button
+              <button
                 className="btn btn-primary d-flex align-items-center justify-content-center"
                 type="button"
                 disabled
@@ -166,11 +200,11 @@ export default function PersonalInfo(props) {
                   aria-hidden="true"
                 ></span>
                 Loading...
-              </Button>
+              </button>
             ) : (
-              <Button variant="primary" onClick={() => handleTransfer()}>
-                Transer
-              </Button>
+              <button type="submit" className="btn btn-primary">
+                Transfer money
+              </button>
             )}
           </form>
         </Modal.Body>
@@ -231,7 +265,7 @@ export default function PersonalInfo(props) {
               >
                 <div>
                   <p>Notes</p>
-                  <span>{note}</span>
+                  <span>{note ? note : "-"}</span>
                 </div>
               </div>
               <div className="w-100 text-end">

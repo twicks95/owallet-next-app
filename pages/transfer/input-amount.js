@@ -29,7 +29,7 @@ export async function getServerSideProps(context) {
 export default function PersonalInfo(props) {
   const router = useRouter();
   const [note, setNote] = useState("");
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState();
   const [receiver, setReceiver] = useState({});
   const { balance } = props.user;
   const { receiverId } = router.query;
@@ -46,6 +46,8 @@ export default function PersonalInfo(props) {
     );
   };
 
+  console.log(amount);
+  console.log(typeof amount);
   return (
     <Layout title="Input Amount">
       <Navbar user={props.user} />
@@ -82,10 +84,10 @@ export default function PersonalInfo(props) {
               <div className={`${styles.inputAmountContainer}`}>
                 <input
                   type="text"
-                  step="0.01"
                   placeholder="0.00"
-                  pattern="[0-9]{10}"
-                  title="Maximum x.xxx.xxx.xxx"
+                  pattern="[0-9]"
+                  maxLength="10"
+                  title="Maximum 9.999.999.999"
                   className={styles.amount}
                   onChange={(e) => setAmount(e.target.value)}
                 />
@@ -112,12 +114,18 @@ export default function PersonalInfo(props) {
                 </div>
               </div>
               <div className="w-100 text-end">
-                <Button
-                  variant="primary"
-                  onClick={() => handleContinue(receiverId, amount, note)}
-                >
-                  Continue
-                </Button>
+                {amount <= balance && amount != 0 ? (
+                  <Button
+                    variant="primary"
+                    onClick={() => handleContinue(receiverId, amount, note)}
+                  >
+                    Continue
+                  </Button>
+                ) : (
+                  <Button variant="primary" disabled>
+                    Continue
+                  </Button>
+                )}
               </div>
             </div>
           </div>
