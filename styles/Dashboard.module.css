@@ -45,6 +45,11 @@
 .historyHead {
   margin-bottom: 40px;
 }
+.historyHead a {
+  color: #6379f4;
+  font-size: 14px;
+  font-weight: 600;
+}
 .historyHead h2 {
   margin: 0px;
 }
@@ -70,6 +75,16 @@
 }
 .history .list p {
   font-size: 14px;
+}
+.income h6,
+.expense h6 {
+  font-size: 14px;
+  margin: 10px 0 8px !important;
+}
+.income span,
+.expense span {
+  font-size: 18px;
+  font-weight: 700;
 }
 .stat {
   height: 100%;

@@ -3,30 +3,26 @@
     font-size: 12px;
   }
 }
-
 .outerContainer {
   background: #eff6ff;
   height: 100%;
   padding: 3% 10%;
 }
-
 .profileContainer {
   background-color: #ffffff;
   border-radius: 25px;
-  box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.051);
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.051);
   height: 100%;
-  padding: 10% 0px;
+  padding: 10% 0;
 }
-
 .profileContainer ul {
   align-items: center;
   display: flex;
   flex-direction: column;
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   width: 100%;
 }
-
 .profileContainer li {
   background-color: #e5e8ed;
   cursor: pointer;
@@ -35,65 +31,76 @@
   padding: 18px 20px;
   width: 50%;
 }
-
 .profileContainer li:not(:last-child) {
   margin-bottom: 20px;
 }
-
 .avatar,
 .profileContainer li {
   border-radius: 10px;
 }
-
 .avatar {
-  filter: drop-shadow(0px 0px 12px rgba(99, 121, 244, 0.2));
+  filter: drop-shadow(0 0 12px rgba(99, 121, 244, 0.2));
   height: 80px;
   object-fit: cover;
   width: 80px;
 }
-
 .input {
   display: none;
 }
-
+.checkCircle,
+.notePencil {
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+}
+.checkCircle,
+.notePencil,
 .pencil {
   font-size: 12px;
 }
-
 .edit {
   border-radius: 10px;
   cursor: pointer;
   margin-top: 20px;
-  padding: 0px 12px;
+  padding: 0 12px;
 }
-
 .edit,
 .profileContainer li {
   transition: all 0.2s ease-in-out;
 }
-
 .edit:hover,
 .profileContainer li:hover {
   color: #6379f4;
-  box-shadow: 0px 10px 20px rgba(99, 121, 244, 0.096);
+  box-shadow: 0 10px 20px rgba(99, 121, 244, 0.096);
   transform: translateY(-2.5px);
 }
-
+.profileContainer h1,
+.profileContainer h3 {
+  margin-bottom: 0;
+}
 .profileContainer h1 {
   font-size: 24px;
 }
-
 .profileContainer h1,
 .profileContainer li {
   color: #4d4b57;
   font-weight: 700;
 }
-
 .profileContainer h3 {
   font-size: 16px;
 }
-
+.profileContainer input {
+  border-style: none;
+  border-bottom: 1px solid #7a7886;
+  color: #4d4b57;
+  font-weight: 700;
+  outline: none;
+  text-align: center;
+}
 .edit,
 .profileContainer h3 {
   color: #7a7886;
+}
+.name {
+  margin-bottom: 10px;
 }
