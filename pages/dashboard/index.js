@@ -1,4 +1,4 @@
-import Link from "next/link";
+// import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { authorizationPage } from "middleware/authorizationPage";
@@ -22,42 +22,51 @@ export async function getServerSideProps(context) {
   const data = await authorizationPage(context);
   const authorization = { Authorization: `Bearer ${data.token || ""}` };
 
-  const [userRes, transactionRes, incomeRes, expenseRes] = await Promise.all([
-    axiosApiInstances
-      .get(`user/${data.userId}`, { headers: authorization })
-      .then((res) => {
-        return res.data.data[0];
-      })
-      .catch(() => {
-        return [];
-      }),
-    axiosApiInstances
-      .get(`transaction?id=${data.userId}&by=all&limit=5`, {
-        headers: authorization,
-      })
-      .then((res) => {
-        return res.data.data;
-      })
-      .catch(() => {
-        return [];
-      }),
-    axiosApiInstances
-      .get(`transaction/income/${data.userId}`, { headers: authorization })
-      .then((res) => {
-        return res.data.data[0].total_income;
-      })
-      .catch(() => {
-        return "";
-      }),
-    axiosApiInstances
-      .get(`transaction/expense/${data.userId}`, { headers: authorization })
-      .then((res) => {
-        return res.data.data[0].total_expense;
-      })
-      .catch(() => {
-        return "";
-      }),
-  ]);
+  const [userRes, transactionRes, incomeRes, expenseRes, dataChartRes] =
+    await Promise.all([
+      axiosApiInstances
+        .get(`user/${data.userId}`, { headers: authorization })
+        .then((res) => {
+          return res.data.data[0];
+        })
+        .catch(() => {
+          return [];
+        }),
+      axiosApiInstances
+        .get(`transaction?id=${data.userId}&by=all&limit=5`, {
+          headers: authorization,
+        })
+        .then((res) => {
+          return res.data.data;
+        })
+        .catch(() => {
+          return [];
+        }),
+      axiosApiInstances
+        .get(`transaction/income/${data.userId}`, { headers: authorization })
+        .then((res) => {
+          return res.data.data[0].total_income;
+        })
+        .catch(() => {
+          return "";
+        }),
+      axiosApiInstances
+        .get(`transaction/expense/${data.userId}`, { headers: authorization })
+        .then((res) => {
+          return res.data.data[0].total_expense;
+        })
+        .catch(() => {
+          return "";
+        }),
+      axiosApiInstances
+        .get(`transaction/total/${data.userId}`, { headers: authorization })
+        .then((res) => {
+          return res.data.data;
+        })
+        .catch(() => {
+          return [];
+        }),
+    ]);
 
   return {
     props: {
@@ -65,13 +74,14 @@ export async function getServerSideProps(context) {
       transactionData: transactionRes,
       income: incomeRes,
       expense: expenseRes,
+      dataChart: dataChartRes,
     },
   };
 }
 
 function Home(props) {
   const router = useRouter();
-  const { income, expense } = props;
+  const { income, expense, dataChart } = props;
   const { balance, user_id, user_phone } = props.user;
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
@@ -83,33 +93,53 @@ function Home(props) {
     setTransactionHistory(props.transactionData);
   }, []);
 
+  const day = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const totalPerDay = [0, 0, 0, 0, 0, 0, 0];
+  if (dataChart.length > 0) {
+    for (const i of dataChart) {
+      if (day.indexOf(i.day) >= 0) {
+        totalPerDay[day.indexOf(i.day)] = parseInt(i.total);
+      }
+    }
+  }
+
   // Data chart
   const data = {
-    labels: ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"],
+    labels: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
     datasets: [
       {
-        label: "# of Votes",
-        data: [12, 19, 20, 5, 40, 60, 16],
+        label: "total",
+        data: totalPerDay,
         backgroundColor: [
-          "#6379F4",
-          "#6379F4",
+          "#3955f5",
+          "#3955f5",
           "#9DA6B5",
           "#9DA6B5",
           "#9DA6B5",
-          "#6379F4",
+          "#3955f5",
           "#9DA6B5",
         ],
         borderColor: [
           "#3955f5",
           "#3955f5",
+          "#9DA6B5",
+          "#9DA6B5",
+          "#9DA6B5",
           "#3955f5",
-          "#3955f5",
-          "#3955f5",
-          "#3955f5",
-          "#3955f5",
+          "#9DA6B5",
         ],
         borderWidth: 1,
         borderRadius: 6,
+        barThickness: 10,
+        minBarLength: 2,
       },
     ],
   };
@@ -118,13 +148,13 @@ function Home(props) {
     setLoading(true);
     axiosApiInstances
       .post(`topup/${id}`, { amount })
-      .then((res) => {
+      .then(() => {
         setTopupSuccess(true);
         setAmount("");
         router.push("/dashboard");
       })
       .catch((err) => {
-        console.log(err.response);
+        window.alert(err.response.msg);
       })
       .finally(() => {
         setLoading(false);
@@ -289,11 +319,7 @@ function Home(props) {
                       <div className="d-flex align-items-center h-100 mt-2">
                         <Bar
                           data={data}
-                          width={400}
-                          height={200}
-                          options={{
-                            maintainAspectRatio: true,
-                          }}
+                          options={{ maintainAspectRatio: true }}
                         />
                       </div>
                     </div>
