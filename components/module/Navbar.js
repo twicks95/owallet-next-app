@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import styles from "../../styles/Navbar.module.css";
 import { BellSimple } from "phosphor-react";
 
-export default function Navbar(props) {
+function Navbar(props) {
   const router = useRouter();
   const { user_id, user_image, user_name, user_phone } = props.user;
 
@@ -34,7 +34,7 @@ export default function Navbar(props) {
           className={`d-flex flex-column justify-content-center ${styles.userInfo}`}
         >
           <p>{user_name}</p>
-          <span>+62 {user_phone.substr(1)}</span>
+          <span>+62 {user_phone ? user_phone.substr(1) : ""}</span>
         </div>
         <BellSimple size={24} className={styles.bell} />
       </div>
@@ -46,3 +46,5 @@ export default function Navbar(props) {
     </div>
   );
 }
+
+export default Navbar;
