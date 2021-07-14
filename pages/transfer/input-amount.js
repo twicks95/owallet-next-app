@@ -12,13 +12,13 @@ import { Button } from "react-bootstrap";
 
 export async function getServerSideProps(context) {
   const data = await authorizationPage(context);
+  const authorization = { Authorization: `Bearer ${data.token} || ""` };
   const res = await axiosApiInstances
-    .get(`user/${data.userId}`)
+    .get(`user/${data.userId}`, { headers: authorization })
     .then((res) => {
       return res.data.data;
     })
     .catch((err) => {
-      console.log(err);
       return [];
     });
   return {
@@ -46,8 +46,6 @@ export default function PersonalInfo(props) {
     );
   };
 
-  console.log(amount);
-  console.log(typeof amount);
   return (
     <Layout title="Input Amount">
       <Navbar user={props.user} />

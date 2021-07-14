@@ -13,8 +13,9 @@ import moment from "moment";
 
 export async function getServerSideProps(context) {
   const data = await authorizationPage(context);
+  const authorization = { Authorization: `Bearer ${data.token} || ""` };
   const res = await axiosApiInstances
-    .get(`user/${data.userId}`)
+    .get(`user/${data.userId}`, { headers: authorization })
     .then((res) => {
       return res.data.data;
     })

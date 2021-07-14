@@ -12,61 +12,42 @@ import { connect } from "react-redux";
 import { getUser } from "redux/actions/userData";
 import Cookies from "js-cookie";
 
-// export async function getServerSideProps(context) {
-//   const data = await authorizationPage(context);
-
-//   const res = await axiosApiInstances
-//     .get(`user/${data.userId}`, {
-//       headers: { Authorization: `Bearer ${data.token} || ""` },
-//     })
-//     .then((res) => {
-//       return res.data.data;
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//       return [];
-//     });
-
-//   return {
-//     props: { user: res[0] },
-//   };
-// }
-
-// export const getStaticPaths = async () => {
-//   const res = await axiosApiInstances
-//     .get("user/all?limit=1000")
-//     .then((res) => {
-//       return res.data.data;
-//     })
-//     .catch((err) => {
-//       return [];
-//     });
-
-//   const paths = res.map((item) => ({
-//     query: {
-//       userPhone: `${item.user_phone}`,
-//     },
-//   }));
-
-//   return {
-//     paths,
-//     fallback: false,
-//   };
-// };
-
-export const getStaticProps = async (context) => {
-  console.log(context);
-  const users = await axiosApiInstances
+export const getStaticPaths = async () => {
+  const res = await axiosApiInstances
     .get("user/all?limit=1000")
     .then((res) => {
       return res.data.data;
+    })
+    .catch((err) => {
+      return [];
+    });
+
+  const paths = res.map((item) => ({
+    query: {
+      userPhone: `${item.user_phone}`,
+    },
+  }));
+
+  return {
+    paths,
+    fallback: false,
+  };
+};
+
+export const getStaticProps = async ({ query }) => {
+  // await authorizationPage(context);
+  const users = await axiosApiInstances
+    .get(`user/phone?userPhone=${query.phone}`)
+    .then((res) => {
+      console.log(res.data.data);
+      // return res.data.data;
     })
     .catch(() => {
       return [];
     });
 
   return {
-    props: { users },
+    props: {},
   };
 };
 

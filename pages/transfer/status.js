@@ -7,18 +7,19 @@ import Navbar from "components/module/Navbar";
 import Footer from "components/module/Footer";
 import PageNav from "components/module/PageNav";
 import styles from "styles/TransferStatus.module.css";
-import { CheckCircle } from "phosphor-react";
+import { CheckCircle, DownloadSimple, ShareNetwork } from "phosphor-react";
 import moment from "moment";
+import { Button } from "react-bootstrap";
 
 export async function getServerSideProps(context) {
   const data = await authorizationPage(context);
+  const authorization = { Authorization: `Bearer ${data.token} || ""` };
   const res = await axiosApiInstances
-    .get(`user/${data.userId}`)
+    .get(`user/${data.userId}`, { headers: authorization })
     .then((res) => {
       return res.data.data;
     })
     .catch((err) => {
-      console.log(err);
       return [];
     });
   return {
@@ -42,7 +43,6 @@ export default function PersonalInfo(props) {
   return (
     <Layout title="Transfer Status">
       <Navbar user={props.user} />
-
       <div className={`container-fluid ${styles.outerContainer}`}>
         <div className="row row-cols-1 row-cols-md-2 h-100 gy-3 gy-md-0">
           <div className={`col-md-3 ${styles.navSide}`}>
@@ -97,6 +97,24 @@ export default function PersonalInfo(props) {
                     <span>{receiver.user_phone}</span>
                   </div>
                 </div>
+              </div>
+              <div className="d-flex flex-column flex-sm-row justify-content-end mt-5 gap-2 gap-lg-4 w-100">
+                <Button variant="secondary" className={styles.secondaryAction}>
+                  <ShareNetwork />
+                </Button>
+                <Button
+                  variant="secondary"
+                  className={`d-flex align-items-center ${styles.secondaryAction}`}
+                >
+                  <DownloadSimple className={styles.downloadIcon} />
+                  Download PDF
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={() => router.push("/dashboard")}
+                >
+                  Back to Home
+                </Button>
               </div>
             </div>
           </div>
