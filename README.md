@@ -11,7 +11,7 @@
 
 ## About The Project
 
-We live in an age of advanced technology and a modern lifestyle nowadays.
+We live in an age of advanced technology and modern lifestyle today. To support productivity in this fast-paced era, this application was created to help anyone make the process of sending money for any need anywhere and anytime easily without having to go to an ATM machine.
 
 ## Built With
 
