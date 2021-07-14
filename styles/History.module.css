@@ -4,7 +4,7 @@
   padding: 3% 10%;
 }
 
-.transferDetailContainer {
+.historyListContainer {
   background-color: #ffffff;
   border-radius: 25px;
   box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.051);
@@ -15,112 +15,65 @@
   align-items: center;
 }
 
-.detailInfo {
-  position: relative;
-}
-
-.detailList,
-.receiver {
-  width: 100%;
-}
-
-.detailList {
-  text-align: left;
-}
-
-.detailList p {
-  color: #7a7886;
-  font-size: 16px;
-  margin-bottom: 10px;
-}
-
-.detailList span {
-  color: #514f5b;
-  font-size: 22px;
-  font-weight: 700;
-}
-
-.transferDetailContainer h5 {
+.historyListContainer h4 {
   color: #3a3d42;
   font-size: 18px;
-  margin-bottom: 25px;
-}
-
-.transferDetailContainer h5,
-.receiver p {
   font-weight: 700;
+  margin-bottom: 30px;
+}
+.historyListContainer h5 {
+  font-size: 16px;
+  margin-bottom: 20px;
 }
 
-.receiver,
-.detailList {
-  border-radius: 10px;
+.historyListContainer h5,
+.list span {
+  color: #7a7886;
+}
+
+.list {
+  border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0px 4px 20px 0px #0000000d;
   margin-bottom: 20px;
   padding: 20px;
+  border-radius: 10px;
 }
-
-.receiver img {
+.list img {
   height: 56px;
   width: 56px;
   border-radius: 10px;
   object-fit: cover;
 }
-
-.receiver h6,
-.receiver p {
+.list h6,
+.list p {
   font-size: 16px;
   font-weight: 700;
 }
-.receiver span {
-  font-size: 14px;
-  margin-top: 10px;
+.list h6 {
+  margin-bottom: 7px;
 }
-.receiver p {
+.list span {
   font-size: 14px;
 }
-
-.transferDetailContainer button {
-  width: 170px;
+.list p {
+  font-size: 14px;
+}
+.income {
+  color: #1ec15f;
+}
+.expense {
+  color: #ff5b37;
+}
+.listContainer {
+  scrollbar-width: none;
+}
+.overflowOn {
+  height: 300px;
+  overflow: auto;
+}
+.listContainer::-webkit-scrollbar {
+  display: none;
 }
 
 @media (max-width: 576px) {
-  .note {
-    width: 250px !important;
-  }
-  .transferDetailContainer button {
-    width: 100%;
-  }
-}
-
-.formContainer {
-  text-align: left;
-  padding: 15px;
-}
-
-.inputs {
-  display: flex;
-  justify-content: space-between;
-  height: 3em;
-}
-
-.formContainer input {
-  border: 1px solid rgba(169, 169, 169, 0.6);
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0px 5px 12px rgba(99, 121, 244, 0.1);
-  font-size: 100%;
-  font-weight: 700;
-  text-align: center;
-  height: 100%;
-  outline: none;
-  width: 100%;
-}
-
-.formContainer input:not(:last-child) {
-  margin-right: 10px;
-}
-
-.formContainer button {
-  width: 100%;
-  margin-top: 90px;
 }

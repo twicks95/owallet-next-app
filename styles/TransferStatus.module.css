@@ -1,3 +1,29 @@
+.secondaryAction {
+  background-color: rgba(99, 121, 244, 0.149);
+}
+
+.transferDetailContainer button {
+  height: 50px;
+}
+
+.secondaryAction {
+  color: #6379f4;
+  border-color: rgba(99, 121, 244, 0.149);
+}
+
+.secondaryAction:hover {
+  background-color: rgba(99, 121, 244, 0.397);
+  border-color: rgba(99, 121, 244, 0.397);
+}
+
+.secondaryAction:first-child {
+  width: 50px;
+}
+
+.downloadIcon {
+  margin-right: 5px;
+}
+
 .outerContainer {
   background: #eff6ff;
   height: 100%;
@@ -83,12 +109,26 @@
   width: 170px;
 }
 
+@media (max-width: 768px) {
+  .transferDetailContainer button {
+    font-size: 12px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .transferDetailContainer button:not(:first-child) {
+    width: 140px;
+  }
+}
+
 @media (max-width: 576px) {
   .note {
     width: 250px !important;
   }
   .transferDetailContainer button {
-    width: 100%;
+    width: 100% !important;
   }
 }
 

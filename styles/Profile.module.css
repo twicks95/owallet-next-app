@@ -3,6 +3,18 @@
     font-size: 12px;
   }
 }
+
+.avaContainer:hover .delete svg {
+  display: inline-block;
+}
+.avaContainer:hover .delete {
+  background-color: #ea2e2e;
+  cursor: pointer !important;
+  pointer-events: all;
+}
+.delete svg {
+  display: none;
+}
 .outerContainer {
   background: #eff6ff;
   height: 100%;
@@ -103,4 +115,22 @@
 }
 .name {
   margin-bottom: 10px;
+}
+.toast svg {
+  height: 20px;
+  margin-right: 5px;
+}
+
+.delete {
+  display: grid;
+  place-items: center;
+  background-color: #ea2e2e00;
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  pointer-events: none;
+  transition: all 0.2s ease-in-out;
 }
