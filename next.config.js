@@ -15,8 +15,12 @@ module.exports = {
         destination: "/auth/register",
       },
       {
-        source: "/create-pin/:id",
-        destination: "/auth/create-pin/[id]",
+        source: "/create-pin",
+        destination: "/auth/create-pin",
+      },
+      {
+        source: "/create-pin/success",
+        destination: "/auth/create-pin/success",
       },
       {
         source: "/reset-password",
