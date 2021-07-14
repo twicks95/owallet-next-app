@@ -1,38 +1,41 @@
-﻿<h1 align='center'>Next JS - Owallet </h1>
+<h1 align='center'>Next App - Owallet </h1>
   <p align="center">
-    <a href="link_deploy">View Demo</a>
+    <a href="https://owallet.vercel.app/">View Demo</a>
     ·
-    <a href="https://github.com/twicks95/owallet-next-app.git/issues">Report Bug</a>
+    <a href="https://github.com/twicks95/owallet-next-app/issues">Report Bug</a>
     ·
-    <a href="https://github.com/twicks95/owallet-next-app.git/pulls">Request Feature</a>
+    <a href="https://github.com/twicks95/owallet-next-app/pulls">Request Feature</a>
   </p>
 
-![Image Banner](src/assets/img/bannerREADME.png)
+![Image Banner](public/dashboard.png)
 
 ## About The Project
 
-#background_projek.
+We live in an age of advanced technology and modern lifestyle today. To support productivity in this fast-paced era, this application was created to help anyone make the process of sending money for any need anywhere and anytime easily without having to go to an ATM machine.
 
 ## Built With
 
-[![React](https://img.shields.io/badge/React-v17.0.2-blue)](https://github.com/facebook/react)
-[![Bootstrap](https://img.shields.io/badge/Bootstrap-v4.6.x-blue)](https://github.com/react-bootstrap/react-bootstrap)
+[![Next](https://img.shields.io/badge/Next-v10.2.3-brightgreen)](https://github.com/facebook/react)
+[![Bootstrap](https://img.shields.io/badge/Bootstrap-v5.0.x-blue)](https://github.com/twbs/bootstrap)
+[![React Bootstrap](https://img.shields.io/badge/React%20Bootstrap-v1.6.1-lightgrey)](https://github.com/react-bootstrap/react-bootstrap)
 
 ## Requirements
 
-1. <a href="https://nodejs.org/en/download/">Node Js</a>
+1. <a href="https://nextjs.org/docs/getting-started">Next Js</a>
 2. Node_modules `npm install` or `yarn install`
-3. Backend API Owallet [`here`](https://github.com/twicks95/owallet-backend.git)
+3. Owallet Backend API [`here`](https://github.com/twicks95/owallet-backend)
 
 ## Getting Started
 
 1. Download this Project or you can type `git clone https://github.com/twicks95/owallet-next-app.git`
-2. Open app's directory in CMD or Terminal
+2. Open the app's directory in CMD or Terminal
 3. Type `npm install` or `yarn install`
-4. Add .env file at root folder project
+4. Add next.config.js file at root folder project
 
 ```sh
-API_BASE_URL = [Backend API]
+APP_NAME: Owallet 
+API_BASE_URL: [Backend URL]
+API_IMG_URL: [Backend image URL]
 ```
 
 5. Type `npm run dev`
@@ -41,6 +44,13 @@ API_BASE_URL = [Backend API]
 
 - [Axios](https://www.npmjs.com/package/axios)
 - [React](https://reactjs.org/)
-- [React Bootstrap](https://react-bootstrap.github.io/) |
+- [React Bootstrap](https://react-bootstrap.github.io/)
+- [Moment](https://www.npmjs.com/package/moment)
+- [Next](https://www.npmjs.com/package/next)
+- [Phosphor-React](https://www.npmjs.com/package/phosphor-react)
+- [Redux](https://github.com/reduxjs/react-redux)
+- [React Chart JS](https://github.com/reactchartjs/react-chartjs-2)
 
----
+## License
+
+© [Teguh Wicaksono](https://github.com/twicks95)
