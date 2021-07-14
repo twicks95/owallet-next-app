@@ -11,26 +11,8 @@ import { MagnifyingGlass } from "phosphor-react";
 import { connect } from "react-redux";
 import { getUser } from "redux/actions/userData";
 import Cookies from "js-cookie";
-
-// export async function getServerSideProps(context) {
-//   const data = await authorizationPage(context);
-
-//   const res = await axiosApiInstances
-//     .get(`user/${data.userId}`, {
-//       headers: { Authorization: `Bearer ${data.token} || ""` },
-//     })
-//     .then((res) => {
-//       return res.data.data;
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//       return [];
-//     });
-
-//   return {
-//     props: { user: res[0] },
-//   };
-// }
+import { Col, Dropdown, DropdownButton, Row } from "react-bootstrap";
+import ReactPaginate from "react-paginate";
 
 // export const getStaticPaths = async () => {
 //   const res = await axiosApiInstances
@@ -55,18 +37,17 @@ import Cookies from "js-cookie";
 // };
 
 export const getStaticProps = async (context) => {
-  console.log(context);
   const users = await axiosApiInstances
-    .get("user/all?limit=1000")
+    .get("user/all?limit=5")
     .then((res) => {
-      return res.data.data;
+      return res.data;
     })
     .catch(() => {
       return [];
     });
 
   return {
-    props: { users },
+    props: { users: users.data, pagination: users.pagination },
   };
 };
 
@@ -77,28 +58,59 @@ const Transfer = (props) => {
   const [user, setUser] = useState([]);
   const [message, setMessage] = useState("");
   const [userLogin, setUserLogin] = useState([]);
+  const [notFound, setNotFound] = useState(false);
+  const [page, setPage] = useState("");
+  const [sort, setSort] = useState("");
+  const [users, setUsers] = useState([]);
+  const limit = 5;
 
   useEffect(() => {
     props.getUser(userId).then((res) => {
       setUserLogin(res.action.payload.data.data[0]);
     });
+    setUsers(props.users);
+    setPage(props.pagination.totalPage);
   }, []);
 
+  const handleSort = () => {
+    axiosApiInstances
+      .get(`user/all?page=${page}&limit=${limit}&sort=${sort}`)
+      .then((res) => {
+        setUsers(res.data.data);
+      })
+      .catch(() => setUsers(props.users));
+  };
+
   const handleSearch = (phone) => {
-    router.push(`/transfer/${phone}`);
-    // axiosApiInstances
-    //   .get(`user/phone?userPhone=${phone}`)
-    //   .then((res) => {
-    //     setUser(res.data.data);
-    //   })
-    //   .catch((err) => {
-    //     setMessage(err.response.data.msg);
-    //     setUser([]);
-    //   });
+    setNotFound(false);
+    phone
+      ? axiosApiInstances
+          .get(`user/phone?userPhone=${phone}`)
+          .then((res) => {
+            setUser(res.data.data);
+          })
+          .catch((err) => {
+            setNotFound(true);
+            setMessage(err.response.data.msg);
+            setUser([]);
+          })
+      : router.push("/transfer");
   };
 
   const handleClick = (receiverId) => {
     router.push(`/transfer/input-amount?receiverId=${receiverId}`);
+  };
+
+  const handlePageClick = (e) => {
+    const selectedPage = e.selected + 1;
+    setPage(selectedPage);
+
+    axiosApiInstances
+      .get(`user/all?page=${page}&limit=${limit}&sort=${sort}`)
+      .then((res) => {
+        setUsers(res.data.data);
+      })
+      .catch(() => setUsers(props.users));
   };
 
   return (
@@ -111,16 +123,42 @@ const Transfer = (props) => {
           </div>
           <div className={`col-md-9 ${styles.personalInfoSide}`}>
             <div className={`text-start ${styles.searchReceiverContainer}`}>
-              <div className={`${styles.searchGroup}`}>
-                <MagnifyingGlass className={`${styles.magnifyingGlass}`} />
-                <input
-                  type="text"
-                  name="phone"
-                  placeholder="Search receiver here..."
-                  onChange={(e) => setPhone(e.target.value)}
-                  onKeyUp={(e) => e.key === "Enter" && handleSearch(phone)}
-                />
-              </div>
+              <Row style={{ marginBottom: "50px" }}>
+                <Col xs={12} md={9} lg={10}>
+                  <div className={`${styles.searchGroup}`}>
+                    <MagnifyingGlass className={`${styles.magnifyingGlass}`} />
+                    <input
+                      type="text"
+                      name="phone"
+                      placeholder="Search receiver here..."
+                      onChange={(e) => setPhone(e.target.value)}
+                      onKeyUp={(e) => e.key === "Enter" && handleSearch(phone)}
+                    />
+                  </div>
+                </Col>
+                <Col xs={12} md={3} lg={2}>
+                  <DropdownButton
+                    id="dropdown-basic-button"
+                    title="Sort"
+                    className={styles.dropdown}
+                  >
+                    <Dropdown.Item
+                      onClick={() => {
+                        setSort("user_name ASC"), handleSort();
+                      }}
+                    >
+                      Name <span>a-z</span>
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() => {
+                        setSort("user_name DESC"), handleSort();
+                      }}
+                    >
+                      Name <span>z-a</span>
+                    </Dropdown.Item>
+                  </DropdownButton>
+                </Col>
+              </Row>
               <div className={styles.receiverLists}>
                 {/* {user.length > 0 ? (
                   user.map((item, index) => (
@@ -171,28 +209,93 @@ const Transfer = (props) => {
                     </span>
                   </div>
                 )} */}
-                {props.users.map((item, index) => (
-                  <div
-                    key={index}
-                    className={`d-flex align-items-center justify-content-between ${styles.list}`}
-                    onClick={() => handleClick(item.user_id)}
-                  >
-                    <div className="d-flex text-start">
-                      <img
-                        src={
-                          item.user_image
-                            ? `${process.env.API_IMG_URL}/${item.user_image}`
-                            : "/default-img-placeholder.png"
-                        }
-                        className="me-2"
-                      />
-                      <div className="d-flex flex-column justify-content-center">
-                        <h5 className="m-0">{item.user_name}</h5>
-                        <span>{item.user_phone}</span>
+                {user.length > 0 ? (
+                  user.map((item, index) => (
+                    <div
+                      key={index}
+                      className={`d-flex align-items-center justify-content-between ${styles.list}`}
+                      onClick={() => handleClick(item.user_id)}
+                    >
+                      <div className="d-flex text-start">
+                        <img
+                          src={
+                            item.user_image
+                              ? `${process.env.API_IMG_URL}/${item.user_image}`
+                              : "/default-img-placeholder.png"
+                          }
+                          className="me-2"
+                        />
+                        <div className="d-flex flex-column justify-content-center">
+                          <h5 className="m-0">{item.user_name}</h5>
+                          <span>{item.user_phone}</span>
+                        </div>
                       </div>
                     </div>
+                  ))
+                ) : notFound ? (
+                  <div className="d-flex flex-column align-items-center justify-content-center h-100">
+                    <p
+                      style={{
+                        color: "rgb(169, 169, 169)",
+                        fontSize: "38px",
+                        fontWeight: "800",
+                      }}
+                      className="m-0"
+                    >
+                      No Receiver.
+                    </p>
+                    <span
+                      style={{
+                        color: "rgb(169, 169, 169)",
+                        fontSize: "14px",
+                        textAlign: "center",
+                        width: "60%",
+                      }}
+                    >
+                      {message
+                        ? message
+                        : "You can find your receiver by enter their phone number in the search box above."}
+                    </span>
                   </div>
-                ))}
+                ) : (
+                  users.map((item, index) => (
+                    <div
+                      key={index}
+                      className={`d-flex align-items-center justify-content-between ${styles.list}`}
+                      onClick={() => handleClick(item.user_id)}
+                    >
+                      <div className="d-flex text-start">
+                        <img
+                          src={
+                            item.user_image
+                              ? `${process.env.API_IMG_URL}/${item.user_image}`
+                              : "/default-img-placeholder.png"
+                          }
+                          className="me-2"
+                        />
+                        <div className="d-flex flex-column justify-content-center">
+                          <h5 className="m-0">{item.user_name}</h5>
+                          <span>{item.user_phone}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+              <div className="d-flex align-items-center justify-content-center mt-5">
+                <ReactPaginate
+                  previousLabel={""}
+                  nextLabel={""}
+                  breakLabel={"..."}
+                  breakClassName={"break-me"}
+                  pageCount={page} // Total page
+                  marginPagesDisplayed={2}
+                  pageRangeDisplayed={2}
+                  onPageChange={(e) => handlePageClick(e)}
+                  containerClassName={styles.pagination}
+                  subContainerClassName={`${styles.pages} ${styles.pagination}`}
+                  activeClassName={styles.active}
+                />
               </div>
             </div>
           </div>

@@ -16,7 +16,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  margin-bottom: 50px;
+  height: 100%;
 }
 
 .searchGroup input {
@@ -24,7 +24,7 @@
   outline: none;
   border-style: none;
   border-radius: 12px;
-  height: 54px;
+  height: 100%;
   width: 100%;
   padding: 0px 50px;
   font-weight: 700;
@@ -38,6 +38,10 @@
 .receiverLists {
   height: 300px;
   overflow: auto;
+  scrollbar-width: none;
+}
+.receiverLists::-webkit-scrollbar {
+  display: none;
 }
 
 .list {
@@ -60,4 +64,95 @@
 }
 .list span {
   font-size: 14px;
+}
+
+.dropdown {
+  height: 100%;
+}
+
+.dropdown div {
+  border-radius: 10px;
+}
+
+.dropdown div a {
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown span {
+  font-weight: 700;
+}
+
+.dropdown button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ffffff;
+  color: #757575;
+  border-color: #757575 !important;
+  font-size: 14px;
+  width: 100%;
+}
+
+.dropdown button:hover,
+.dropdown button:focus {
+  background-color: #ffffff !important;
+  color: #757575 !important;
+}
+
+.pagination {
+  margin: 15px auto;
+  display: flex;
+  list-style: none;
+  outline: none;
+}
+.pagination > .active > a {
+  background-color: #5f2eea !important;
+  box-shadow: 0px 8px 16px rgba(95, 46, 234, 0.24);
+  border-color: none !important ;
+  border-radius: 8px;
+  color: #fff !important;
+}
+
+.pagination ul {
+  padding-left: 0 !important;
+}
+
+.pagination > li > a {
+  background-color: #ffffff;
+  border: 0.5px solid #dedede;
+  padding: 9px 15px;
+  height: 500px;
+  margin: 0 8px;
+  outline: none;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.pagination > li:last-child > a,
+.pagination > li:first-child > a {
+  border: none !important;
+  background-color: transparent !important;
+  display: none;
+}
+
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+  background-color: #47ccde;
+  border-color: #47ccde;
+  outline: none;
+}
+.pagination > li > a,
+.pagination > li > span {
+  color: #47ccde;
+}
+.pagination > li:first-child > a,
+.pagination > li:first-child > span,
+.pagination > li:last-child > a,
+.pagination > li:last-child > span {
+  border-radius: unset;
 }
