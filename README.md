@@ -7,7 +7,7 @@
     <a href="https://github.com/twicks95/owallet-next-app/pulls">Request Feature</a>
   </p>
 
-![Image Banner](IMAGE PATH)
+![Image Banner](public/dashboard.png)
 
 ## About The Project
 
