@@ -11,22 +11,23 @@ import {
   ArrowRight,
   CheckCircle,
   XCircle,
+  X,
   IconContext,
   NotePencil,
   PencilSimple,
 } from "phosphor-react";
 import styles from "styles/Profile.module.css";
-import { Alert, Button, Modal } from "react-bootstrap";
+import { Alert, Button, Modal, Toast } from "react-bootstrap";
 
 export async function getServerSideProps(context) {
   const data = await authorizationPage(context);
+  const authorization = { Authorization: `Bearer ${data.token || ""}` };
   const res = await axiosApiInstances
-    .get(`user/${data.userId}`)
+    .get(`user/${data.userId}`, { headers: authorization })
     .then((res) => {
       return res.data.data;
     })
     .catch((err) => {
-      console.log(err);
       return [];
     });
   return {
@@ -39,14 +40,15 @@ export default function Profile(props) {
   const { user_id, user_image, user_name, user_phone } = props.user;
 
   const [image, setImage] = useState(null);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState({ upload: "", delete: "" });
   const [name, setName] = useState(user_name);
   const [smShow, setSmShow] = useState(false);
   const [phone, setPhone] = useState(user_phone);
   const [imageError, setImageError] = useState(false);
-  const [imageSuccess, setImageSuccess] = useState(false);
+  const [deleteError, setDeleteError] = useState(false);
   const [changeName, setChangeName] = useState(false);
   const [changePhone, setChangePhone] = useState(false);
+  const [showToast, setShowToast] = useState({ upload: false, delete: false });
 
   const handleImage = (e) => {
     setImage(e.target.files[0]);
@@ -61,12 +63,13 @@ export default function Profile(props) {
       .patch(`user/update/image/${id}`, formData)
       .then((res) => {
         setSmShow(false);
-        setImageSuccess(true);
+        setMessage({ ...message, upload: res.data.msg });
         setImage(null);
+        setShowToast({ ...showToast, upload: true });
         router.push(`/profile/${id}`);
       })
       .catch((err) => {
-        setMessage(err.response.data.msg);
+        setMessage({ ...message, upload: err.response.data.msg });
         setImageError(true);
       });
   };
@@ -86,6 +89,22 @@ export default function Profile(props) {
       });
   };
 
+  const handleDeleteImage = (id) => {
+    setDeleteError(false);
+    axiosApiInstances
+      .delete(`user/delete/image/${id}`)
+      .then((res) => {
+        setMessage({ ...message, delete: res.data.msg });
+        setShowToast({ ...showToast, delete: true });
+        router.push(`/profile/${id}`);
+      })
+      .catch((err) => {
+        setDeleteError(true);
+        setMessage({ ...message, delete: err.response.data.msg });
+        setShowToast({ ...showToast, delete: true });
+      });
+  };
+
   const handleLogout = () => {
     Cookie.remove("token");
     Cookie.remove("userId");
@@ -95,6 +114,47 @@ export default function Profile(props) {
   return (
     <Layout title="Profile">
       <Navbar user={props.user} />
+      <div
+        style={{
+          position: "fixed",
+          top: 20,
+          right: 0,
+          zIndex: 1,
+        }}
+      >
+        <Toast
+          onClose={() => setShowToast({ ...showToast, upload: false })}
+          show={showToast.upload}
+          delay={5000}
+          autohide
+          className={styles.toast}
+          style={{ backgroundColor: "white", width: "350px" }}
+        >
+          <Toast.Header>
+            <CheckCircle color="#1EC15F" weight="fill" />
+            <strong className="me-auto">Upload Image</strong>
+          </Toast.Header>
+          <Toast.Body className="text-start">{message.upload}</Toast.Body>
+        </Toast>
+        <Toast
+          onClose={() => setShowToast({ ...showToast, delete: false })}
+          show={showToast.delete}
+          delay={5000}
+          autohide
+          className={styles.toast}
+          style={{ backgroundColor: "white", width: "350px" }}
+        >
+          <Toast.Header>
+            {deleteError ? (
+              <XCircle color="#ea2e2e" weight="fill" />
+            ) : (
+              <CheckCircle color="#1EC15F" weight="fill" />
+            )}
+            <strong className="me-auto">Delete Image</strong>
+          </Toast.Header>
+          <Toast.Body className="text-start">{message.delete}</Toast.Body>
+        </Toast>
+      </div>
       <Modal
         size="sm"
         show={smShow}
@@ -115,7 +175,7 @@ export default function Profile(props) {
           Sure want to change your profile picture?
           {imageError && (
             <Alert variant="danger" className="mt-4">
-              {message}
+              {message.upload}
             </Alert>
           )}
         </Modal.Body>
@@ -158,15 +218,27 @@ export default function Profile(props) {
                 className={`d-flex flex-column align-items-center ${styles.profileContainer}`}
               >
                 <div className="d-flex flex-column align-items-center mb-3">
-                  <img
-                    src={
-                      user_image
-                        ? `http://localhost:3004/api/${user_image}`
-                        : "/default-img-placeholder.png"
-                    }
-                    className={styles.avatar}
-                    alt="user avatar"
-                  />
+                  <div className={`position-relative ${styles.avaContainer}`}>
+                    <img
+                      src={
+                        user_image
+                          ? `http://localhost:3004/api/${user_image}`
+                          : "/default-img-placeholder.png"
+                      }
+                      className={styles.avatar}
+                      alt="user avatar"
+                    />
+                    {user_image ? (
+                      <div
+                        className={styles.delete}
+                        onClick={() => handleDeleteImage(user_id)}
+                      >
+                        <X height={12} color="#ffffff" />
+                      </div>
+                    ) : (
+                      <></>
+                    )}
+                  </div>
                   <input
                     type="file"
                     id="image"

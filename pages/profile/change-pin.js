@@ -11,8 +11,9 @@ import { IconContext, WarningCircle, Info } from "phosphor-react";
 
 export async function getServerSideProps(context) {
   const data = await authorizationPage(context);
+  const authorization = { Authorization: `Bearer ${data.token} || ""` };
   const res = await axiosApiInstances
-    .get(`user/${data.userId}`)
+    .get(`user/${data.userId}`, { headers: authorization })
     .then((res) => {
       return res.data.data;
     })
@@ -96,7 +97,7 @@ export default function ChangePassword(props) {
           }, 3000);
         })
         .catch((err) => {
-          console.log(err.response);
+          window.alert(err.response.msg);
         })
         .finally(() => {
           setLoading(false);

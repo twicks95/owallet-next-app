@@ -9,8 +9,9 @@ import styles from "../../styles/PersonalInfo.module.css";
 
 export async function getServerSideProps(context) {
   const data = await authorizationPage(context);
+  const authorization = { Authorization: `Bearer ${data.token} || ""` };
   const res = await axiosApiInstances
-    .get(`user/${data.userId}`)
+    .get(`user/${data.userId}`, { headers: authorization })
     .then((res) => {
       return res.data.data;
     })
@@ -63,7 +64,7 @@ export default function PersonalInfo(props) {
                     <h4>Phone Number</h4>
                     <p className="mb-0">+62 {user_phone.substr(1)}</p>
                   </div>
-                  <Link href="/">Manage</Link>
+                  <Link href="/manage-phone">Manage</Link>
                 </div>
               </div>
             </div>
