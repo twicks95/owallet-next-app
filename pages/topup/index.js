@@ -30,7 +30,7 @@ export default function Topup(props) {
       <div className={`container-fluid ${styles.outerContainer}`}>
         <div className="row row-cols-1 row-cols-md-2 h-100 gy-3 gy-md-0">
           <div className={`col-md-3 ${styles.navSide}`}>
-            <PageNav user={props.user} page="transfer" />
+            <PageNav user={props.user} page="topup" />
           </div>
           <div className="col-md-9">
             <div className={styles.contentSide}>
