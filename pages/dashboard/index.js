@@ -102,7 +102,7 @@ function Home(props) {
     "Friday",
     "Saturday",
   ];
-  const totalPerDay = [0, 0, 0, 0, 0, 0, 0];
+  const totalPerDay = [null, null, null, null, null, null, null];
   if (dataChart.length > 0) {
     for (const i of dataChart) {
       if (day.indexOf(i.day) >= 0) {

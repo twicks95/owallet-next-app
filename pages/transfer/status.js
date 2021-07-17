@@ -30,7 +30,7 @@ export async function getServerSideProps(context) {
 export default function PersonalInfo(props) {
   const router = useRouter();
   const { balance, user_id } = props.user;
-  const { receiverId, amount, note } = router.query;
+  const { id, receiverId, amount, note } = router.query;
   const [receiver, setReceiver] = useState({});
   const date = new Date(Date.now());
 
@@ -39,6 +39,12 @@ export default function PersonalInfo(props) {
       setReceiver(res.data.data[0]);
     });
   }, []);
+
+  const handleDownloadPDF = () => {
+    axiosApiInstances.get(`transaction/export/${id}`).then((res) => {
+      router.push(res.data.data.url);
+    });
+  };
 
   return (
     <Layout title="Transfer Status">
@@ -105,6 +111,7 @@ export default function PersonalInfo(props) {
                 <Button
                   variant="secondary"
                   className={`d-flex align-items-center ${styles.secondaryAction}`}
+                  onClick={handleDownloadPDF}
                 >
                   <DownloadSimple className={styles.downloadIcon} />
                   Download PDF

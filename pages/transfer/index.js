@@ -54,14 +54,14 @@ export const getStaticProps = async () => {
 const Transfer = (props) => {
   const router = useRouter();
   const userId = Cookies.get("userId");
-  const [phone, setPhone] = useState("");
+  const [page, setPage] = useState(1);
   const [user, setUser] = useState([]);
+  const [sort, setSort] = useState("");
+  const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [userLogin, setUserLogin] = useState([]);
   const [notFound, setNotFound] = useState(false);
-  const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState("");
-  const [sort, setSort] = useState("");
   const [users, setUsers] = useState(props.users);
   const limit = 5;
 
@@ -79,6 +79,10 @@ const Transfer = (props) => {
         setUsers(res.data.data);
       })
       .catch(() => setUsers(props.users));
+
+    sort
+      ? router.push(`/transfer?page=${page}&order=${sort}`)
+      : router.push(`/transfer?page=${page}`);
   }, [page, sort]);
 
   const handleSearch = (phone) => {
@@ -98,7 +102,8 @@ const Transfer = (props) => {
             setTotalPage(0);
           })
       : setTotalPage(props.pagination.totalPage),
-      router.push("/transfer");
+      setUser([]);
+    router.push("/transfer");
   };
 
   const handleClick = (receiverId) => {

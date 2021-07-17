@@ -85,8 +85,10 @@ export default function PersonalInfo(props) {
           notes: note,
         };
         axiosApiInstances.post("transaction", data).then((res) => {
+          // console.log(res);
+          const transactionId = res.data.data.id;
           router.push(
-            `/transfer/status?receiverId=${receiverId}&amount=${amount}&note=${note}`
+            `/transfer/status?id=${transactionId}&receiverId=${receiverId}&amount=${amount}&note=${note}`
           );
         });
       })

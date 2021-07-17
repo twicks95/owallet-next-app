@@ -13,7 +13,6 @@ export async function getServerSideProps(context) {
       return res.data.data;
     })
     .catch((err) => {
-      console.log(err);
       return [];
     });
 

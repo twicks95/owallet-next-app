@@ -1,59 +1,48 @@
-@media (min-width: 768px) {
-  .landingNav a {
-    font-size: 29px !important;
-  }
-
-  .landingNav button {
-    font-size: 18px !important;
-    height: 59px !important;
-    width: 120px;
-  }
-  .landingNav div button:first-child {
-    margin-right: 10px !important;
-  }
-
-  .hero div {
-    width: 50% !important;
-  }
-
-  .hero img {
-    position: absolute;
-    width: 35%;
-    top: 20%;
-    right: 10%;
-  }
+.outerContainer {
+  font-size: 62.5%;
+}
+.outerContainer h2,
+.outerContainer h1 {
+  font-weight: 800;
+  font-size: 2.6em;
+  margin-bottom: 1em;
+}
+.outerContainer h3,
+.about .card p,
+.hero p,
+.hero button {
+  font-size: 1.2em;
+}
+.outerContainer h2 span {
+  color: #6379f4;
 }
 
 .hero {
   background-color: #6379f4;
-  height: 100vh;
+  padding: 15em 10%;
   position: relative;
   color: #ffffff;
   text-align: start;
-  padding: 10% 10% 0px;
   display: flex;
   align-items: center;
 }
-
 .hero div {
   width: 100%;
 }
-
 .hero h1 {
-  font-size: 46px;
-  font-weight: 800;
-  line-height: 78px;
+  line-height: 1.5em;
   margin-bottom: 0px;
 }
-
 .hero p {
-  font-size: 18px;
-  line-height: 31px;
-  margin: 40px 0px 50px;
+  line-height: 1.5em;
+  margin: 2em 0px 4em;
+  width: 80%;
 }
-
 .hero button {
-  width: 173px;
+  width: 10em;
+}
+.hero img {
+  display: none;
 }
 
 .landingNav {
@@ -66,32 +55,299 @@
   align-items: center;
   justify-content: space-between;
 }
-
 .landingNav a {
   color: #ffffff;
   font-weight: 700;
   font-size: 24px;
-  /* font-size: 29px; */
 }
-
 .landingNav button {
   font-size: 10px;
   height: 36px;
 }
-
 .landingNav button:hover,
 .hero button:hover {
   box-shadow: 0px 10px 20px rgb(76, 100, 241);
 }
-
 .landingNav div button:first-child {
   margin-right: 5px;
 }
-
 .btnLight {
   color: #6379f4;
 }
-
 .btnLight:hover {
   color: #425cf1;
+}
+
+.partners,
+.features {
+  background-color: #f4f3fd;
+}
+
+.partners {
+  width: 100%;
+  margin: 0;
+  padding: 5% 10%;
+}
+.partners img {
+  height: 5em;
+}
+.about,
+.footer,
+.userComments {
+  padding: 10%;
+}
+.about,
+.userComments {
+  background-color: #fafcff;
+  color: #3a3d42;
+}
+.about h3 {
+  width: 70%;
+}
+.about .cardGroup {
+  overflow: auto;
+  scrollbar-width: none;
+}
+.about .cardGroup::-webkit-scrollbar {
+  display: none;
+}
+.about .card {
+  background-color: #ffffff;
+  border-radius: 25px;
+  box-shadow: 0px 4px 25px 0px #acacac26;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4em 3em;
+}
+.about .card h4 {
+  font-size: 1.4em;
+  font-weight: 700;
+  margin: 1.6em 0;
+  width: calc(100vw - 12em);
+}
+.about .card p {
+  width: 70%;
+}
+.about .card .iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  height: 5em;
+  width: 5em;
+  background-color: #6256e11a;
+}
+
+.footer {
+  background-color: #6379f4;
+  text-align: left;
+  color: #ffffff;
+}
+.footer h5 {
+  font-size: 2em;
+  font-weight: 700;
+}
+.footer p {
+  margin: 2em 0 3em;
+  width: 50%;
+}
+.footer span {
+  font-weight: 600;
+}
+.features {
+  padding: 0 10%;
+}
+.features img {
+  width: 100%;
+  position: absolute;
+}
+.features img:first-child {
+  top: 0%;
+  left: 0;
+}
+.features img:last-child {
+  bottom: -100px;
+  left: 0;
+}
+.features h2 {
+  /* width: 50%; */
+}
+.features .list {
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 25px;
+}
+.features li {
+  font-size: 1.4em;
+  font-weight: 700;
+}
+.features .list p {
+  font-size: 1.2em;
+  margin: 0;
+}
+.features .list:nth-child(1) li::before {
+  content: "1.";
+  color: #6379f4;
+  font-weight: 700;
+  margin-right: 5px;
+}
+.features .list:nth-child(2) li::before {
+  content: "2.";
+  color: #6379f4;
+  font-weight: 700;
+  margin-right: 5px;
+}
+.features .list:nth-child(3) li::before {
+  content: "3.";
+  color: #6379f4;
+  font-weight: 700;
+  margin-right: 5px;
+}
+
+.userComments {
+  height: 100vh;
+}
+@media (min-width: 576px) {
+  .about .card h4 {
+    width: calc(100vw - 16em);
+  }
+  .hero img {
+    top: 30% !important;
+  }
+}
+@media (min-width: 768px) {
+  .about h3 {
+    width: 45%;
+  }
+
+  .features img:first-child {
+    top: -150px;
+    left: 0;
+  }
+  .features img:last-child {
+    bottom: -20px;
+    left: 0;
+  }
+
+  .landingNav a {
+    font-size: 29px;
+  }
+
+  .landingNav button {
+    font-size: 1.4em;
+    height: 4.2em;
+    width: 8em;
+  }
+  .landingNav div button:first-child {
+    margin-right: 10px;
+  }
+  .hero {
+    padding: 25em 10% 15em;
+  }
+  .hero div {
+    width: 50%;
+  }
+
+  .outerContainer h2,
+  .outerContainer h1 {
+    font-size: 4em;
+  }
+  .outerContainer h3,
+  .about .card p,
+  .hero p,
+  .hero button {
+    font-size: 1.6em;
+  }
+
+  .hero p {
+    line-height: 2em;
+    width: 100%;
+  }
+
+  .hero img {
+    display: inline-block;
+    position: absolute;
+    width: 35%;
+    top: 25% !important;
+    right: 10%;
+    z-index: 1;
+  }
+  .hero button {
+    font-size: 1.4em;
+    width: 12em;
+  }
+  .partners,
+  .about,
+  .userComments {
+    position: relative;
+    z-index: 2;
+  }
+  .partners img {
+    height: 10em !important;
+  }
+  /* .about .card h4 {
+    width: calc(100vw - 16em);
+  } */
+  .about .cardGroup {
+    overflow: hidden;
+  }
+  .about .card h4 {
+    font-size: 1.8em;
+    width: auto;
+  }
+}
+
+@media (min-width: 825px) {
+  .features img:first-child {
+    top: -170px;
+    left: 0;
+  }
+  .features img:last-child {
+    bottom: -50px;
+    left: 0;
+  }
+}
+@media (min-width: 889px) {
+  .features img:first-child {
+    top: -170px;
+    left: 0;
+  }
+  .features img:last-child {
+    bottom: -90px;
+    left: 0;
+  }
+}
+@media (min-width: 935px) {
+  .features img:first-child {
+    top: -190px;
+    left: 0;
+  }
+  .features img:last-child {
+    bottom: -140px;
+    left: 0;
+  }
+}
+@media (min-width: 992px) {
+  .features h2 {
+    width: 50%;
+  }
+  .features img:first-child {
+    top: -200px;
+    left: 0;
+  }
+  .features img:last-child {
+    bottom: -180px;
+    left: 0;
+  }
+}
+@media (min-width: 1200px) {
+  .features img:first-child {
+    top: -250px;
+    left: 0;
+  }
+  .features img:last-child {
+    bottom: -400px;
+    left: 0;
+  }
 }
