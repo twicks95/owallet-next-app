@@ -1,6 +1,6 @@
 <h1 align='center'>Next App - Owallet </h1>
   <p align="center">
-    <a href="https://owallet-next-app.vercel.app/">View Demo</a>
+    <a href="https://owallet.vercel.app/">View Demo</a>
     ·
     <a href="https://github.com/twicks95/owallet-next-app/issues">Report Bug</a>
     ·
