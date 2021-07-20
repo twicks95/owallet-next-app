@@ -74,7 +74,7 @@ const History = (props) => {
                           <img
                             src={
                               item.receiver_image
-                                ? `http://localhost:3004/api/${item.receiver_image}`
+                                ? `${process.env.API_IMG_URL}${item.receiver_image}`
                                 : "/default-img-placeholder.png"
                             }
                             className="me-2"
@@ -83,7 +83,7 @@ const History = (props) => {
                           <img
                             src={
                               item.sender_image
-                                ? `http://localhost:3004/api/${item.sender_image}`
+                                ? `${process.env.API_IMG_URL}${item.sender_image}`
                                 : "/default-img-placeholder.png"
                             }
                             className="me-2"
@@ -138,7 +138,7 @@ const History = (props) => {
                           <img
                             src={
                               item.receiver_image
-                                ? `http://localhost:3004/api/${item.receiver_image}`
+                                ? `${process.env.API_IMG_URL}${item.receiver_image}`
                                 : "/default-img-placeholder.png"
                             }
                             className="me-2"
@@ -147,7 +147,7 @@ const History = (props) => {
                           <img
                             src={
                               item.sender_image
-                                ? `http://localhost:3004/api/${item.sender_image}`
+                                ? `${process.env.API_IMG_URL}${item.sender_image}`
                                 : "/default-img-placeholder.png"
                             }
                             className="me-2"

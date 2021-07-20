@@ -1,8 +1,8 @@
 module.exports = {
   env: {
     APP_NAME: "Owallet",
-    API_BASE_URL: "http://localhost:3004/api/v1/",
-    API_IMG_URL: "http://localhost:3004/api/",
+    API_BASE_URL: "https://owallet-app.herokuapp.com/api/v1/",
+    API_IMG_URL: "https://owallet-app.herokuapp.com/api/",
   },
   async rewrites() {
     return [

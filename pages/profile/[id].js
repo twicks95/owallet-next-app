@@ -222,7 +222,7 @@ export default function Profile(props) {
                     <img
                       src={
                         user_image
-                          ? `http://localhost:3004/api/${user_image}`
+                          ? `${process.env.API_IMG_URL}${user_image}`
                           : "/default-img-placeholder.png"
                       }
                       className={styles.avatar}
