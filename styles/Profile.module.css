@@ -4,6 +4,12 @@
   }
 }
 
+@media (max-width: 480px) {
+  .profileContainer li {
+    width: 80% !important;
+  }
+}
+
 .avaContainer:hover .delete svg {
   display: inline-block;
 }
@@ -63,7 +69,7 @@
 .notePencil {
   cursor: pointer;
   position: absolute;
-  right: 0;
+  right: -24px;
 }
 .checkCircle,
 .notePencil,

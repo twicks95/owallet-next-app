@@ -254,7 +254,7 @@ export default function Profile(props) {
                   </label>
                 </div>
                 <div
-                  className={`d-flex justify-content-center align-items-center position-relative w-50 ${styles.name}`}
+                  className={`d-flex justify-content-center align-items-center position-relative ${styles.name}`}
                 >
                   {!changeName ? (
                     <>
@@ -284,7 +284,7 @@ export default function Profile(props) {
                   )}
                 </div>
                 <div
-                  className={`d-flex justify-content-center align-items-center position-relative w-50 ${styles.phone}`}
+                  className={`d-flex justify-content-center align-items-center position-relative ${styles.phone}`}
                 >
                   {!changePhone ? (
                     <>
